@@ -1,0 +1,7 @@
+.item {
+  color: white;
+}
+.item .icon {
+  width: 50px;
+  border-radius: 50%;
+}

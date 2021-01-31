@@ -1,0 +1,34 @@
+.nav {
+  grid-area: n;
+  background-color: blanchedalmond;
+  /* width: 200px; */
+  padding: 10px;
+}
+.item a{
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+
+}
+.item a.active{
+  color: rgb(255, 0, 0);
+}
+.sideBar{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.sideBarItems {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+.sideBarItem {
+  display: flex;
+  margin: 5px;
+  flex-basis: 33%;
+  flex-direction: column;
+}
+.sideBarItem img {
+  width: 50px;
+  border-radius: 50px;
+}
