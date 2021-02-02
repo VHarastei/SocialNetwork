@@ -1,0 +1,20 @@
+.sidebar {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.sidebarItems {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+.sidebarItem {
+  display: flex;
+  margin: 5px;
+  flex-basis: 33%;
+  flex-direction: column;
+}
+.sidebarItem img {
+  width: 50px;
+  border-radius: 50px;
+}
