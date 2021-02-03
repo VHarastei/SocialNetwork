@@ -1,3 +1,8 @@
+@font-face{
+  font-family: "sf-regular";
+  src: url(./assets/fonts/SF-Pro-Display-Regular.otf);
+}
+
 .app-wrapper {
   margin: 0 auto;
   display: grid;
@@ -7,6 +12,8 @@
   grid-template-rows: 60px, 1fr;
   grid-template-columns: 200px;
   width: 1200px;
+  font-family: 'sf-regular';
+  /* font-size: 50px; */
 }
 
 .app-wrapper-content {

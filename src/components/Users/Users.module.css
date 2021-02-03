@@ -1,3 +1,10 @@
 .userPhoto {
     width: 100px;
 }
+
+.selectedPage {
+    color: red;
+}
+.pageSelector {
+    cursor: pointer;
+}

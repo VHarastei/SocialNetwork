@@ -1,10 +1,8 @@
 import React from 'react';
 import styles from './Users.module.css';
+import userPhoto from '../../assets/images/person.png';
 
-const Users = (props) => {
-  if(props.users.length === 0) {
-    props.setUsers(
-      [
+/*[
         {
           id: 1,
           followed: true,
@@ -37,29 +35,53 @@ const Users = (props) => {
           location: { country: 'Ukraine', city: 'Muckachevo' },
           photoUrl: 'https://img.icons8.com/plasticine/2x/person-male.png',
         },
-      ]
-    )
+      ]*/
+
+const Users = (props) => {
+  let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+  let pages = [];
+
+  for (let i = 1; i <= pagesCount; i++) {
+    pages.push(i);
   }
 
   return (
     <div>
+      {pages.map((p) => {
+        return (
+          <span
+            onClick={(e) => {
+              props.onChangeCurrentPage(p);
+            }}
+            className={`${props.currentPage === p && styles.selectedPage} ${styles.pageSelector}`}
+          >
+            {p}
+          </span>
+        );
+      })}
+
       {props.users.map((u) => (
         <div key={u.id}>
           <div>
-            <img src={u.photoUrl} alt="userPhoto" className={styles.userPhoto}></img>
+            <img
+              src={u.photos.small != null ? u.photos.small : userPhoto}
+              alt="userPhoto"
+              className={styles.userPhoto}
+            ></img>
             {u.followed ? (
-              <button onClick={() => props.unfollow(u.id)}> Unfollow </button> ):(
+              <button onClick={() => props.unfollow(u.id)}> Unfollow </button>
+            ) : (
               <button onClick={() => props.follow(u.id)}> Follow </button>
             )}
           </div>
           <div>
-            <div>{u.fullName}</div>
+            <div>{u.name}</div>
             <div>{u.status}</div>
           </div>
-          <div>
-            <div>{u.location.country}</div>
-            <div>{u.location.city}</div>
-          </div>
+          {/* <div>
+            <div>{'u.location.country'}</div>
+            <div>{'u.location.city'}</div>
+          </div> */}
         </div>
       ))}
     </div>
