@@ -4,7 +4,7 @@ import s from './Sidebar.module.css';
 const Sidebar = (props) => {
   return (
     <div className={s.sidebar}>
-      <div>Friends</div>
+      <div className={s.sidebarText}>Friends</div>
       <div className={s.sidebarItems}>
         <div className={s.sidebarItem}>
           <img
@@ -19,13 +19,6 @@ const Sidebar = (props) => {
             alt="img"
           />
           <div>{props.sidebar.friends[1].name}</div>
-        </div>
-        <div className={s.sidebarItem}>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzdCnMXv32Be239UIoWX0J4CZZIdZkfDljCw&usqp=CAU"
-            alt="img"
-          />
-          <div>{props.sidebar.friends[2].name}</div>
         </div>
       </div>
     </div>

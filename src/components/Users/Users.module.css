@@ -1,10 +1,36 @@
 .userPhoto {
-    width: 100px;
+  width: 100px;
 }
 
-.selectedPage {
-    color: red;
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 .pageSelector {
-    cursor: pointer;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #333333;
+  color: gray;
+  border-left: 1px solid black;
+  text-align: center;
+}
+.selectedPage {
+  color: white;
+}
+.userItem {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+}
+.followBtn {
+  background-color: #f3673b;
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  font-size: 20px;
+  width: 100px;
+}
+.followBtn:hover {
+  background-color: #ff3300;
+  transition: 0.5s ease;
 }

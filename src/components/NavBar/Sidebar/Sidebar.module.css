@@ -1,18 +1,37 @@
+@font-face{
+  font-family: "sf-thin";
+  src: url(../../../assets/fonts/SF-Pro-Display-Thin.otf);
+}
+
 .sidebar {
+  color: white;
   text-align: center;
   display: flex;
   flex-direction: column;
 }
+.sidebarText {
+  margin-top: 5px;
+  padding: 5px;
+}
 .sidebarItems {
+  color: gray;
   text-align: center;
   display: flex;
   flex-direction: row;
+  font-family: "sf-thin";
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+
 }
 .sidebarItem {
+  text-align: center;
   display: flex;
   margin: 5px;
-  flex-basis: 33%;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 }
 .sidebarItem img {
   width: 50px;

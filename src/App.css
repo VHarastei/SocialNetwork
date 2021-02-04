@@ -2,7 +2,9 @@
   font-family: "sf-regular";
   src: url(./assets/fonts/SF-Pro-Display-Regular.otf);
 }
-
+body {
+  background-color: #f2f2f2;
+}
 .app-wrapper {
   margin: 0 auto;
   display: grid;
@@ -13,10 +15,11 @@
   grid-template-columns: 200px;
   width: 1200px;
   font-family: 'sf-regular';
-  /* font-size: 50px; */
+  font-size: 24px;
 }
 
 .app-wrapper-content {
   grid-area: c;
-  background-color: rgb(95, 165, 162);
+  padding: 16px;
+  background-color: #ffffff;
 }

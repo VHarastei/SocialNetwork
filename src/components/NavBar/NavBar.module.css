@@ -1,16 +1,20 @@
 .nav {
   grid-area: n;
-  background-color: blanchedalmond;
-  /* width: 200px; */
-  padding: 10px;
+  width: 100%;
+  background-color: #333333;
+  /* padding: 16px; */
 }
-.item a{
-  color: rgb(0, 0, 0);
+.item {
+  border-bottom: 1px solid black;
+  padding: 10px 20px;
+}
+.nav a{
+  color: gray;
   text-decoration: none;
-
 }
-.item a.active{
-  color: rgb(255, 0, 0);
+a.active .item{
+  color: white;
+  background-color: black;
 }
 .sideBar{
   text-align: center;

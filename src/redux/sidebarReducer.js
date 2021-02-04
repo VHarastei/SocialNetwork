@@ -1,7 +1,7 @@
 let initialState = {
   friends: [
-    { id: 1, name: 'biba' },
-    { id: 2, name: 'boba' },
+    { id: 1, name: 'Rosdick' },
+    { id: 2, name: 'Kerets' },
     { id: 3, name: 'booba' },
   ],
 };
