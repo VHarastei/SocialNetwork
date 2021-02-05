@@ -3,41 +3,6 @@ import styles from './Users.module.css';
 import userPhoto from '../../assets/images/person.png';
 import { NavLink } from 'react-router-dom';
 
-/*[
-        {
-          id: 1,
-          followed: true,
-          fullName: 'Vasya H.',
-          status: 'React enjoyer',
-          location: { country: 'Ukraine', city: 'Khust' },
-          photoUrl: 'https://img.icons8.com/plasticine/2x/person-male.png',
-        },
-        {
-          id: 2,
-          followed: false,
-          fullName: 'Vitalya K.',
-          status: 'POE fan',
-          location: { country: 'Ukraine', city: 'Perechun' },
-          photoUrl: 'https://img.icons8.com/plasticine/2x/person-male.png',
-        },
-        {
-          id: 3,
-          followed: false,
-          fullName: 'Rostik Kal.',
-          status: 'On the verge of extincion',
-          location: { country: 'Ukraine', city: 'Dungeon' },
-          photoUrl: 'https://img.icons8.com/plasticine/2x/person-male.png',
-        },
-        {
-          id: 4,
-          followed: false,
-          fullName: 'Igor M.',
-          status: 'Just play Duyz',
-          location: { country: 'Ukraine', city: 'Muckachevo' },
-          photoUrl: 'https://img.icons8.com/plasticine/2x/person-male.png',
-        },
-      ]*/
-
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   let pages = [];
@@ -55,9 +20,7 @@ const Users = (props) => {
               onClick={(e) => {
                 props.onChangeCurrentPage(p);
               }}
-              className={`${props.currentPage === p && styles.selectedPage} ${
-                styles.pageSelector
-              }`}
+              className={`${props.currentPage === p && styles.selectedPage} ${styles.pageSelector}`}
             >
               {p}
             </span>
@@ -67,7 +30,7 @@ const Users = (props) => {
 
       {props.users.map((u) => (
         <div className={styles.userItem} key={u.id}>
-          <div>
+          <div className={styles.userContainer}>
             <NavLink to={`/profile/${u.id}`}>
               <img
                 src={u.photos.small != null ? u.photos.small : userPhoto}
@@ -77,6 +40,7 @@ const Users = (props) => {
             </NavLink>
             {u.followed ? (
               <button
+                disabled={props.followingInProgress.some((id) => id === u.id)}
                 onClick={() => props.unfollow(u.id)}
                 className={styles.followBtn}
               >
@@ -84,6 +48,7 @@ const Users = (props) => {
               </button>
             ) : (
               <button
+                disabled={props.followingInProgress.some((id) => id === u.id)}
                 onClick={() => props.follow(u.id)}
                 className={styles.followBtn}
               >

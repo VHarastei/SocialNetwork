@@ -21,6 +21,12 @@
 }
 .userItem {
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  display: flex;
+  padding: 10px;
+}
+.userContainer {
+  display: flex;
+  flex-direction: column;
 }
 .followBtn {
   background-color: #f3673b;
@@ -29,6 +35,7 @@
   padding: 5px 10px;
   font-size: 20px;
   width: 100px;
+  color: white;
 }
 .followBtn:hover {
   background-color: #ff3300;

@@ -3,7 +3,6 @@ import Preloader from "../../common/Preloader/Preloader";
 import s from "./ProfileInfo.module.css";
 
 const ProfileInfo = (props) => {
-  console.log(props);
   if(!props.profile) {
     return <Preloader/>
   }
