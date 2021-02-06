@@ -23,21 +23,18 @@ export const usersAPI = {
     return instanse
     .delete(`follow/${userId}`)
     .then((response) => response.data);
-  }
+  },
+  getProfile(userId) {
+    return instanse
+    .get(`profile/${userId}`)
+    .then((response) => response.data);
+  },
 };
 
 export const authAPI = {
   authUser() {
     return instanse
       .get(`auth/me`)
-      .then((response) => response.data);
-  },
-};
-
-export const profileAPI = {
-  getUser(userId) {
-    return instanse
-      .get(`profile/${userId}`)
       .then((response) => response.data);
   },
 };

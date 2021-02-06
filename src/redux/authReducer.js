@@ -8,7 +8,7 @@ let initialState = {
   email: null,
   isAuth: false,
 };
-
+ 
 let authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_DATA:
@@ -27,7 +27,7 @@ export const setAuthUserData = (userId, email, login) => ({
   data: { userId, email, login },
 });
 
-export const authUser = () => {
+export const getAuthUserData = () => {
   return (dispatch) => {
     authAPI.authUser().then((data) => {
       if (data.resultCode === 0) {

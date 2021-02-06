@@ -41,3 +41,7 @@
   background-color: #ff3300;
   transition: 0.5s ease;
 }
+.followBtn:disabled {
+  background-color: #ff330079;
+  transition: 0.3s;
+}
