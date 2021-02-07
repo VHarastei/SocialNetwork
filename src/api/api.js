@@ -25,10 +25,28 @@ export const usersAPI = {
     .then((response) => response.data);
   },
   getProfile(userId) {
+    console.warn('Obsolete method');
+    return profileAPI.getProfile(userId);
+  },
+};
+
+export const profileAPI = {
+  getProfile(userId) {
     return instanse
     .get(`profile/${userId}`)
     .then((response) => response.data);
   },
+  getStatus(userId) {
+    return instanse
+    .get(`profile/status/${userId}`)
+    .then((response) => response.data)
+  },
+  updateStatus(status) {
+    return instanse
+    .put(`profile/status`, {status})
+    .then((response) => response.data)
+  }
+
 };
 
 export const authAPI = {
