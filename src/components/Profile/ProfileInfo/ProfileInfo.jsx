@@ -1,13 +1,12 @@
-import React from "react";
-import Preloader from "../../common/Preloader/Preloader";
-import s from "./ProfileInfo.module.css";
-import ProfileStatus from "./ProfileStatus";
+import React from 'react';
+import Preloader from '../../common/Preloader/Preloader';
+import s from './ProfileInfo.module.css';
+import ProfileStatus from './ProfileStatus';
 
 const ProfileInfo = (props) => {
-  if(!props.profile) {
-    return <Preloader/>
+  if (!props.profile) {
+    return <Preloader />;
   }
-  
 
   return (
     <div>
@@ -19,10 +18,11 @@ const ProfileInfo = (props) => {
         />
       </div>
       <div className={s.descriptionBlock}>
-        {/* <div>{props.profile.aboutMe}</div> */}
-        {console.log(props.status)}
-        <ProfileStatus updateStatus={props.updateStatus} status={props.status}/>
-        </div>
+        <ProfileStatus
+          updateStatus={props.updateStatus}
+          status={props.status}
+        />
+      </div>
     </div>
   );
 };

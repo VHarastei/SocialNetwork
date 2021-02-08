@@ -1,4 +1,5 @@
 import React from 'react';
+import { Field, Form } from 'react-final-form';
 import {Redirect} from 'react-router-dom';
 import DialogItem from './DialogItem/DialogItem';
 import s from './Dialogs.module.css';
@@ -13,16 +14,6 @@ const Dialogs = (props) => {
   let messageElements = dialogsPage.messages.map((m) => (
     <Message message={m.message} id={m.id} />
   ));
-  let newMessageText = dialogsPage.newMessageText;
-
-  let onSendMessageClick = () => {
-    props.sendMessage();
-  };
-
-  let onMessageChange = (e) => {
-    let text = e.target.value;
-    props.messageChange(text);
-  };
 
   if(!props.isAuth) return <Redirect to={'/login'}/>
 
@@ -31,11 +22,35 @@ const Dialogs = (props) => {
       <div className={s.dialogsItems}>{dialogElements}</div>
       <div>
         <div className={s.messages}>{messageElements}</div>
-        <textarea onChange={onMessageChange} value={newMessageText}></textarea>
-        <button onClick={onSendMessageClick}>Send</button>
+        <SendMessageForm sendMessage={props.sendMessage}/>
       </div>
     </div>
   );
 };
+
+let SendMessageForm = (props) => {
+  return (
+    <Form
+      onSubmit={(obj) => {
+        props.sendMessage(obj.newMessageText);
+        obj.newMessageText = '';
+      }}
+    >
+      {({ handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <Field name="newMessageText">
+            {({ input }) => (
+              <input type="text" placeholder="Write new message" {...input} />
+            )}
+          </Field>
+          <div>
+            <button type="submit">Send</button>
+          </div>
+        </form>
+      )}
+    </Form>
+  );
+};
+
 
 export default Dialogs;
