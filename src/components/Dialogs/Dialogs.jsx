@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, Form } from 'react-final-form';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { maxLength } from '../../utils/validators/validators';
 import DialogItem from './DialogItem/DialogItem';
 import s from './Dialogs.module.css';
 import Message from './Message/Message';
@@ -15,14 +16,14 @@ const Dialogs = (props) => {
     <Message message={m.message} id={m.id} />
   ));
 
-  if(!props.isAuth) return <Redirect to={'/login'}/>
+  if (!props.isAuth) return <Redirect to={'/login'} />;
 
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{dialogElements}</div>
       <div>
         <div className={s.messages}>{messageElements}</div>
-        <SendMessageForm sendMessage={props.sendMessage}/>
+        <SendMessageForm sendMessage={props.sendMessage} />
       </div>
     </div>
   );
@@ -38,9 +39,12 @@ let SendMessageForm = (props) => {
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <Field name="newMessageText">
-            {({ input }) => (
-              <input type="text" placeholder="Write new message" {...input} />
+          <Field name="newMessageText" validate={maxLength(300)}>
+            {({ input, meta }) => (
+              <div className={s.fieldControl + ' ' + s.error}>
+                <input type="text" placeholder="Write new message" {...input} />
+                {meta.error && meta.touched && <span>{meta.error}</span>}
+              </div>
             )}
           </Field>
           <div>
@@ -51,6 +55,5 @@ let SendMessageForm = (props) => {
     </Form>
   );
 };
-
 
 export default Dialogs;

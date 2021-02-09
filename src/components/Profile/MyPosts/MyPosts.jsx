@@ -2,6 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import { Form, Field } from 'react-final-form';
+import { maxLength } from '../../../utils/validators/validators';
 
 const MyPosts = (props) => {
   let state = props.profilePage;
@@ -29,9 +30,12 @@ let AddNewPostForm = (props) => {
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <Field name="newPostText">
-            {({ input }) => (
-              <input type="text" placeholder="Write new post" {...input} />
+          <Field name="newPostText" validate={maxLength(300)}>
+            {({ input, meta }) => (
+              <div className={s.fieldControl + ' ' + s.error}>
+                <textarea type="text" placeholder="Write new post" {...input} />
+                {meta.error && meta.touched && <span>{meta.error}</span>}
+              </div>
             )}
           </Field>
           <div>
