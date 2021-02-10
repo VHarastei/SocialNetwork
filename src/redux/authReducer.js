@@ -1,13 +1,15 @@
 import { authAPI } from '../api/api';
-import { FORM_ERROR } from 'final-form'
+import { FORM_ERROR } from 'final-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
+const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR';
 
 let initialState = {
   userId: null,
   login: null,
   email: null,
   isAuth: false,
+  loginError: null,
 };
 
 let authReducer = (state = initialState, action) => {
@@ -16,6 +18,12 @@ let authReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+      };
+
+    case SET_LOGIN_ERROR:
+      return {
+        ...state,
+        loginError: action.loginError,
       };
     default:
       return state;
@@ -27,9 +35,14 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({
   payload: { userId, email, login, isAuth },
 });
 
+export const setLoginError = (loginError) => ({
+  type: SET_LOGIN_ERROR,
+  loginError,
+});
+
 export const getAuthUserData = () => {
   return (dispatch) => {
-    authAPI.authUser().then((data) => {
+    return authAPI.authUser().then((data) => {
       if (data.resultCode === 0) {
         let { id, email, login } = data.data;
         dispatch(setAuthUserData(id, email, login, true));
@@ -43,6 +56,9 @@ export const login = (email, password, rememberMe) => {
     authAPI.login(email, password, rememberMe).then((data) => {
       if (data.resultCode === 0) {
         dispatch(getAuthUserData());
+        dispatch(setLoginError(null));
+      } else {
+        dispatch(setLoginError(data.messages[0]));
       }
     });
   };
