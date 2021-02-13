@@ -24,10 +24,6 @@ export const usersAPI = {
     .delete(`follow/${userId}`)
     .then((response) => response.data);
   },
-  getProfile(userId) {
-    console.warn('Obsolete method');
-    return profileAPI.getProfile(userId);
-  },
 };
 
 export const profileAPI = {

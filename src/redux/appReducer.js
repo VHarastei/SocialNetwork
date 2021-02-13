@@ -1,6 +1,6 @@
 import { getAuthUserData } from './authReducer';
 
-const INITIALIZED_SUCCES = 'INITIALIZED_SUCCES';
+const INITIALIZED_SUCCES = 'SocialNetwork/app/INITIALIZED_SUCCES';
 
 let initialState = {
   initialized: false,
@@ -26,10 +26,6 @@ export const initializeApp = () => {
   return async (dispatch) => {
     await dispatch(getAuthUserData());
     dispatch(initializedSucces());
-      
-    // setTimeout(() => {
-    //   dispatch(initializedSucces());
-    // }, 500)
   };
 };
 

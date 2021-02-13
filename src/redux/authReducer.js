@@ -1,15 +1,13 @@
 import { authAPI } from '../api/api';
-import { FORM_ERROR } from 'final-form';
 
-const SET_USER_DATA = 'SET_USER_DATA';
-const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR';
+const SET_USER_DATA = 'SocialNetwork/auth/SET_USER_DATA';
+const SET_LOGIN_ERROR = 'SocialNetwork/auth/SET_LOGIN_ERROR';
 
 let initialState = {
   userId: null,
   login: null,
   email: null,
   isAuth: false,
-  loginError: null,
 };
 
 let authReducer = (state = initialState, action) => {
@@ -41,36 +39,32 @@ export const setLoginError = (loginError) => ({
 });
 
 export const getAuthUserData = () => {
-  return (dispatch) => {
-    return authAPI.authUser().then((data) => {
-      if (data.resultCode === 0) {
-        let { id, email, login } = data.data;
-        dispatch(setAuthUserData(id, email, login, true));
-      }
-    });
+  return async (dispatch) => {
+    const data = await authAPI.authUser();
+    if (data.resultCode === 0) {
+      let { id, email, login } = data.data;
+      dispatch(setAuthUserData(id, email, login, true));
+    }
+    return data;
   };
 };
 
 export const login = (email, password, rememberMe) => {
-  return (dispatch) => {
-    authAPI.login(email, password, rememberMe).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(getAuthUserData());
-        dispatch(setLoginError(null));
-      } else {
-        dispatch(setLoginError(data.messages[0]));
-      }
-    });
+  return async (dispatch) => {
+    const data = await authAPI.login(email, password, rememberMe);
+    if (data.resultCode === 0) {
+      dispatch(getAuthUserData());
+    }
+    return data;
   };
 };
 
 export const logout = () => {
-  return (dispatch) => {
-    authAPI.logout().then((data) => {
+  return async (dispatch) => {
+    const data = await authAPI.logout()
       if (data.resultCode === 0) {
         dispatch(setAuthUserData(null, null, null, false));
       }
-    });
   };
 };
 

@@ -7,30 +7,17 @@ const NavBar = () => {
   return (
     <div>
       <nav className={s.nav}>
-      <NavLink to="/profile" activeClassName={s.active}>
-        <div className={s.item}>
-            Profile
-        </div>
+        <NavLink to="/profile" activeClassName={s.active}>
+          <div className={s.item}>Profile</div>
         </NavLink>
         <NavLink to="/dialogs" activeClassName={s.active}>
-        <div className={s.item}>
-            Messages
-          
-        </div>
+          <div className={s.item}>Messages</div>
         </NavLink>
         <NavLink to="/users" activeClassName={s.active}>
-        <div className={s.item}>
-          
-            Find users
-          
-        </div>
+          <div className={s.item}>Find users</div>
         </NavLink>
         <NavLink to="/settings" activeClassName={s.active}>
-        <div className={s.item}>
-         
-            Settings
-          
-        </div>
+          <div className={s.item}>Settings</div>
         </NavLink>
         <SidebarContainer />
       </nav>

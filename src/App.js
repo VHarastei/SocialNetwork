@@ -10,7 +10,6 @@ import Login from './components/Login/Login';
 import { initializeApp } from './redux/appReducer';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
 import Preloader from './components/common/Preloader/Preloader';
 
 class App extends React.Component {
@@ -21,7 +20,7 @@ class App extends React.Component {
   render() {
     if (!this.props.initialized) {
       return <Preloader />;
-      }
+    }
     return (
       <div className="app-wrapper">
         <HeaderContainer />

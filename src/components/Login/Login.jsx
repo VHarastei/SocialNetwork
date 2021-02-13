@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
-import FormStateToRedux from '../../redux/loginFormStateToRedux';
 import {
   composeValidators,
   maxLength,
@@ -10,25 +9,20 @@ import {
 import s from './Login.module.css';
 import { login } from '../../redux/authReducer';
 import { Redirect } from 'react-router-dom';
+import { FORM_ERROR } from 'final-form';
 
 const Login = (props) => {
   if (props.isAuth) {
     return <Redirect to="/profile" />;
   }
 
-  const onSubmit = (formData) => {
-    props.login(formData.email, formData.password, formData.rememberMe);
-  };
-
   return (
     <div>
       <h1>login</h1>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={props.onSubmit}
         render={({ submitError, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            {/* <FormStateToRedux form="login" /> */}
-
             <Field
               name="email"
               validate={composeValidators(required, maxLength(30))}
@@ -59,9 +53,7 @@ const Login = (props) => {
                 </div>
               )}
             </Field>
-            {props.loginError && (
-              <span className={s.error}>{props.loginError}</span>
-            )}
+            {submitError && <div className={s.error}>{submitError}</div>}
             <div>
               <button type="submit">Submit</button>
             </div>
@@ -77,4 +69,16 @@ const mapStateToProps = (state) => ({
   loginError: state.auth.loginError,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSubmit: (formData) => {
+      return dispatch(
+        login(formData.email, formData.password, formData.rememberMe)
+      ).then((err) => {
+        return { [FORM_ERROR]: err.messages[0] };
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

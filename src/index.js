@@ -7,18 +7,14 @@ import store from './redux/reduxStore';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-setInterval(() => {
-  store.dispatch({type: 'fake'})
-}, 1000);
-
-  ReactDOM.render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <App store={store} />
-      </Provider>
-    </BrowserRouter>,
-    document.getElementById('root')
-  );
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <App store={store} />
+    </Provider>
+  </BrowserRouter>,
+  document.getElementById('root')
+);
 //dispatch={store.dispatch.bind(store)
 
 // If you want to start measuring performance in your app, pass a function
