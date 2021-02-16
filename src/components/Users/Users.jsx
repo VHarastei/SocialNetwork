@@ -8,11 +8,12 @@ const Users = (props) => {
     <div>
       <Paginator
         styles={styles}
-        totalUsersCount={props.totalUsersCount}
+        totalItemsCount={props.totalItemsCount}
         pageSize={props.pageSize}
         pages={props.pages}
         onChangeCurrentPage={props.onChangeCurrentPage}
         currentPage={props.currentPage}
+        portionSize={10}
       />
 
       {props.users.map((u) => (

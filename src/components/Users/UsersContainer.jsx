@@ -5,7 +5,7 @@ import {
   setCurrentPage,
   //unfollow,
   requestUsers,
-  toggleFollow
+  toggleFollow,
 } from '../../redux/usersReducer';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
@@ -33,11 +33,9 @@ class UsersAPIContainer extends React.Component {
         <Users
           users={this.props.users}
           pageSize={this.props.pageSize}
-          totalUsersCount={this.props.totalUsersCount}
+          totalItemsCount={this.props.totalItemsCount}
           currentPage={this.props.currentPage}
-          //follow={this.props.follow}
           toggleFollow={this.props.toggleFollow}
-          //unfollow={this.props.unfollow}
           onChangeCurrentPage={this.onChangeCurrentPage}
           followingInProgress={this.props.followingInProgress}
         />
@@ -50,7 +48,7 @@ let mapStateToProps = (state) => {
   return {
     users: getUsers(state),
     pageSize: getPageSize(state),
-    totalUsersCount: getTotalUsersCount(state),
+    totalItemsCount: getTotalUsersCount(state),
     currentPage: getCurrentPage(state),
     isFetching: getIsFetching(state),
     followingInProgress: getFollowingInProgress(state),
@@ -59,8 +57,6 @@ let mapStateToProps = (state) => {
 
 const UsersContainer = connect(mapStateToProps, {
   toggleFollow,
-  //follow,
- //unfollow,
   setCurrentPage,
   requestUsers,
 })(UsersAPIContainer);
