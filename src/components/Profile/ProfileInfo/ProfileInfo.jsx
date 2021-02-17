@@ -3,22 +3,27 @@ import Preloader from '../../common/Preloader/Preloader';
 import s from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus';
 import ProfileStatusHooks from './ProfileStatusHooks';
+import userPhoto from '../../../assets/images/person.png';
 
 const ProfileInfo = (props) => {
   if (!props.profile) {
     return <Preloader />;
   }
 
+  const onSavePhoto = (e) => {
+    if (e.target.files.length) {
+      props.savePhoto(e.target.files[0]);
+    }
+  };
   return (
     <div>
-      <div>
+      <div className={s.descriptionBlock}>
         <img
           className={s.icon}
-          src="https://www.klaviyo.com/wp-content/uploads/2016/09/abstract-background-1024x273.jpg"
+          src={props.profile.photos.large || userPhoto}
           alt="icon"
         />
-      </div>
-      <div className={s.descriptionBlock}>
+        {props.isOwner && <input type={'file'} onChange={onSavePhoto} />}
         <ProfileStatusHooks
           updateStatus={props.updateStatus}
           status={props.status}
