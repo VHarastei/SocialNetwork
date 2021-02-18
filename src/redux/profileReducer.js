@@ -37,7 +37,7 @@ let profileReducer = (state = initialState, action) => {
       return { ...state, status: action.status };
     }
     case SAVE_PHOTO_SUCCESS: {
-      return { ...state, profile: {...state.profile, photos: action.photos} };
+      return { ...state, profile: { ...state.profile, photos: action.photos } };
     }
     default:
       return state;
@@ -56,7 +56,7 @@ export const setStatus = (status) => ({
   type: SET_STATUS,
   status,
 });
-export const savePhotoSuccess= (photos) => ({
+export const savePhotoSuccess = (photos) => ({
   type: SAVE_PHOTO_SUCCESS,
   photos,
 });
@@ -86,9 +86,19 @@ export const savePhoto = (file) => {
   return async (dispatch) => {
     const data = await profileAPI.savePhoto(file);
     if (data.resultCode === 0) {
-      dispatch(savePhotoSuccess(data.data.photos)); 
+      dispatch(savePhotoSuccess(data.data.photos));
     }
   };
+};
+
+export const saveProfile = (profile) => async (dispatch, getState) => {
+  
+  const userId = getState().auth.userId;
+  const data = await profileAPI.saveProfile(profile);
+  if (data.resultCode === 0) {
+    dispatch(getUserProfile(userId));
+  }
+  return data;
 };
 
 export default profileReducer;

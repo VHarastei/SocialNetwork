@@ -4,7 +4,8 @@ import {
   getUserProfile,
   getStatus,
   updateStatus,
-  savePhoto
+  savePhoto,
+  saveProfile,
 } from '../../redux/profileReducer';
 import Profile from './Profile';
 import { withRouter } from 'react-router-dom';
@@ -22,28 +23,32 @@ import { compose } from 'redux';
 //     this.props.getStatus(userId);
 //     this.props.getUserProfile(userId);
 //   }
-
 //   render() {
 //     return <Profile {...this.props} />;
 //   }
 // }
 
-const ProfileContainerH = (props) => {
+const ProfileContainerH = ({
+  match,
+  authorizedUserId,
+  history,
+  getStatus,
+  getUserProfile,
+  ...props
+}) => {
   useEffect(() => {
-    let userId = props.match.params.userId;
+    let userId = match.params.userId;
     if (!userId) {
-      userId = props.authorizedUserId;
-      if (!userId) props.history.push('/login');
+      userId = authorizedUserId;
+      if (!userId) history.push('/login');
     }
     if (userId) {
-      props.getStatus(userId);
-      props.getUserProfile(userId);
+      getStatus(userId);
+      getUserProfile(userId);
     }
-  }, [props.match.params.userId]);
-  return <Profile {...props} isOwner={!props.match.params.userId} />;
+  }, [match, authorizedUserId, getStatus, getUserProfile, history]);
+  return <Profile {...props} isOwner={!match.params.userId} />;
 };
-//TODO 
-//FIX STATUS
 
 let mapStateToProps = (state) => {
   return {
@@ -59,7 +64,8 @@ export default compose(
     getUserProfile,
     getStatus,
     updateStatus,
-    savePhoto
+    savePhoto,
+    saveProfile,
   }),
   withRouter
 )(ProfileContainerH);

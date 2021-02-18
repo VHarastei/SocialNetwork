@@ -7,7 +7,7 @@ import { maxLength } from '../../../utils/validators/validators';
 const MyPosts = (props) => {
   let state = props.profilePage;
   let postElements = state.posts.map((p) => (
-    <Post id={p.id} message={p.message} likesCount={p.likesCount} />
+    <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount} />
   ));
   return (
     <div className={s.postsBlock}>
