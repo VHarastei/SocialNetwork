@@ -54,6 +54,23 @@ const Login = (props) => {
               )}
             </Field>
             {submitError && <div className={s.error}>{submitError}</div>}
+            {props.captchaUrl && (
+              <div>
+                <img src={props.captchaUrl} alt="captcha" />
+                <Field name="captcha" validate={required}>
+                  {({ input, meta }) => (
+                    <div className={s.fieldControl + ' ' + s.error}>
+                      <input
+                        type="text"
+                        placeholder="Enter captcha"
+                        {...input}
+                      />
+                      {meta.error && meta.touched && <span>{meta.error}</span>}
+                    </div>
+                  )}
+                </Field>
+              </div>
+            )}
             <div>
               <button type="submit">Submit</button>
             </div>
@@ -66,14 +83,19 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
-  loginError: state.auth.loginError,
+  captchaUrl: state.auth.captchaUrl,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (formData) => {
       return dispatch(
-        login(formData.email, formData.password, formData.rememberMe)
+        login(
+          formData.email,
+          formData.password,
+          formData.rememberMe,
+          formData.captcha
+        )
       ).then((err) => {
         return { [FORM_ERROR]: err.messages[0] };
       });

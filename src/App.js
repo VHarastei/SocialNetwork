@@ -32,17 +32,17 @@ class App extends React.Component {
         <HeaderContainer />
         <NavBar />
         <Suspense fallback={<Preloader />}>
-          <Switch>
-            <div className="app-wrapper-content">
-              <Route
-                path="/profile/:userId?"
-                render={() => <ProfileContainer />}
-              />
-              <Route path="/dialogs" render={() => <DialogsContainer />} />
-              <Route path="/users" render={() => <UsersContainer />} />
-              <Route path="/login" render={() => <Login />} />
-            </div>
-          </Switch>
+          {/* <Switch> */}
+          <div className="app-wrapper-content">
+            <Route
+              path="/profile/:userId?"
+              render={() => <ProfileContainer />}
+            />
+            <Route path="/dialogs" render={() => <DialogsContainer />} />
+            <Route path="/users" render={() => <UsersContainer />} />
+            <Route path="/login" render={() => <Login />} />
+          </div>
+          {/* </Switch> */}
         </Suspense>
       </div>
     );

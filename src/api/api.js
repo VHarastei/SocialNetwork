@@ -50,22 +50,28 @@ export const profileAPI = {
       .then((response) => response.data);
   },
   saveProfile(profile) {
-    return instanse
-    .put(`profile`, profile)
-    .then((response) => response.data);
-  }
+    return instanse.put(`profile`, profile).then((response) => response.data);
+  },
 };
 
 export const authAPI = {
   authUser() {
     return instanse.get(`auth/me`).then((response) => response.data);
   },
-  login(email, password, rememberMe = false) {
+  login(email, password, rememberMe = false, captcha = null) {
     return instanse
-      .post(`auth/login`, { email, password, rememberMe })
+      .post(`auth/login`, { email, password, rememberMe, captcha })
       .then((response) => response.data);
   },
   logout() {
     return instanse.delete(`auth/login`).then((response) => response.data);
+  },
+};
+
+export const securityAPI = {
+  getCaptchaUrl() {
+    return instanse
+      .get(`security/get-captcha-url`)
+      .then((response) => response.data);
   },
 };
