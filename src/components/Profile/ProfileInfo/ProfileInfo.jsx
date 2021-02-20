@@ -12,6 +12,7 @@ const ProfileInfo = ({
   savePhoto,
   updateStatus,
   status,
+  statusError,
   saveProfile,
 }) => {
   const [editMode, setEditMode] = useState(false);
@@ -51,7 +52,7 @@ const ProfileInfo = ({
           />
         )}
 
-        <ProfileStatusHooks updateStatus={updateStatus} status={status} />
+        {isOwner && <ProfileStatusHooks updateStatus={updateStatus} status={status} statusError={statusError}/> }
       </div>
     </div>
   );

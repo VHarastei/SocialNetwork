@@ -3,6 +3,7 @@ import { profileAPI } from '../api/api';
 const ADD_POST = 'SocialNetwork/profile/ADD-POST';
 const SET_USER_PROFILE = 'SocialNetwork/profile/SET_USER_PROFILE';
 const SET_STATUS = 'SocialNetwork/profile/SET_STATUS';
+const SET_STATUS_ERROR = 'SocialNetwork/profile/SET_STATUS_ERROR';
 const SAVE_PHOTO_SUCCESS = 'SocialNetwork/profile/SAVE_PHOTO_SUCCESS';
 
 let initialState = {
@@ -13,7 +14,8 @@ let initialState = {
     { id: 4, message: '11121 Post', likesCount: 5 },
   ],
   profile: null,
-  status: '',
+  status: null,
+  statusError: null,
 };
 
 let profileReducer = (state = initialState, action) => {
@@ -30,12 +32,15 @@ let profileReducer = (state = initialState, action) => {
         newPostText: '',
       };
     }
-    case SET_USER_PROFILE: {
-      return { ...state, profile: action.profile };
+    case SET_USER_PROFILE:
+    case SET_STATUS:
+    case SET_STATUS_ERROR: {
+      return {
+        ...state,
+        ...action.payload,
+      };
     }
-    case SET_STATUS: {
-      return { ...state, status: action.status };
-    }
+
     case SAVE_PHOTO_SUCCESS: {
       return { ...state, profile: { ...state.profile, photos: action.photos } };
     }
@@ -50,11 +55,15 @@ export const addPostActionCreator = (newPostText) => ({
 });
 export const setUserProfile = (profile) => ({
   type: SET_USER_PROFILE,
-  profile,
+  payload: { profile },
 });
 export const setStatus = (status) => ({
   type: SET_STATUS,
-  status,
+  payload: { status },
+});
+export const setStatusError = (statusError) => ({
+  type: SET_STATUS,
+  payload: { statusError },
 });
 export const savePhotoSuccess = (photos) => ({
   type: SAVE_PHOTO_SUCCESS,
@@ -75,11 +84,18 @@ export const getStatus = (userId) => {
   };
 };
 
-export const updateStatus = (status) => {
-  return async (dispatch) => {
+export const updateStatus = (status) => async (dispatch) => {
+  try {
     const data = await profileAPI.updateStatus(status);
-    if (data.resultCode === 0) dispatch(setStatus(status));
-  };
+    if (data.resultCode === 0) {
+      dispatch(setStatus(status));
+      dispatch(setStatusError(null));
+    } else {
+      dispatch(setStatusError(data.messages[0]));
+    }
+  } catch (err) {
+    dispatch(setStatusError(err.message));
+  }
 };
 
 export const savePhoto = (file) => {
@@ -92,7 +108,6 @@ export const savePhoto = (file) => {
 };
 
 export const saveProfile = (profile) => async (dispatch, getState) => {
-  
   const userId = getState().auth.userId;
   const data = await profileAPI.saveProfile(profile);
   if (data.resultCode === 0) {

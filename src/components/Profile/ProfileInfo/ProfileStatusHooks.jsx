@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import s from './ProfileInfo.module.css';
+
+//FIX STATUS FOR UNAUTHORIZED USER
 
 const ProfileStatusHooks = (props) => {
   let [editMode, setEditMode] = useState(false);
@@ -31,7 +34,10 @@ const ProfileStatusHooks = (props) => {
           value={status}
         ></input>
       ) : (
-        <span onDoubleClick={activateEditMode}>Status: {props.status || 'No status'}</span>
+        <div>
+          <span onDoubleClick={activateEditMode}>Status: {props.status || 'No status'}</span>
+          {props.statusError && <div className={s.error}>{props.statusError}</div>}
+        </div>
       )}
     </div>
   );

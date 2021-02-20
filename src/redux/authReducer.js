@@ -1,9 +1,7 @@
 import { authAPI, securityAPI } from '../api/api';
 
 const SET_USER_DATA = 'SocialNetwork/auth/SET_USER_DATA';
-// const SET_LOGIN_ERROR = 'SocialNetwork/auth/SET_LOGIN_ERROR';
 const SET_CAPTCHA_URL = 'SocialNetwork/auth/SET_CAPTCHA_URL';
-
 
 let initialState = {
   userId: null,
