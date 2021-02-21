@@ -1,60 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import s from './ProfileInfo.module.css';
 
-class profileStatus extends React.Component {
-  state = {
-    editMode: false,
-    status: this.props.status,
-  };
-  toggleEditMode = () => {
-    debugger;
-    if (this.state.editMode) this.props.updateStatus(this.state.status);
-    this.setState({
-      editMode: !this.state.editMode,
-    });
-  };
-  activateEditMode = () => {
-    this.setState({
-      editMode: true,
-    });
-  };
-  deactivateEditMode = () => {
-    this.setState({
-      editMode: false,
-    });
-    this.props.updateStatus(this.state.status);
+const ProfileStatusHooks = (props) => {
+  let [editMode, setEditMode] = useState(false);
+  let [status, setStatus] = useState(props.status);
+
+  const activateEditMode = () => {
+    if(props.isOwner) setEditMode(true);
   };
 
-  onStatusChange = (e) => {
-    this.setState({
-      status: e.target.value,
-    });
+  const deactivateEditMode = () => {
+    setEditMode(false);
+    props.updateStatus(status);
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.status !== this.props.status) {
-      this.setState({
-        status: this.props.status,
-      });
-    }
-  }
 
-  render() {
-    return (
-      <div>
-        {this.state.editMode ? (
-          <input
-            onChange={this.onStatusChange}
-            autoFocus={true}
-            onBlur={this.deactivateEditMode}
-            value={this.state.status}
-          ></input>
-        ) : (
-          <span onDoubleClick={this.activateEditMode}>
-            {this.props.status || 'No status'}
-          </span>
-        )}
-      </div>
-    );
-  }
-}
+  const onStatusChange = (e) => {
+    setStatus(e.target.value);
+  };
 
-export default profileStatus;
+  useEffect(() => {
+    setStatus(props.status);
+  },[props.status])
+
+  return (
+    <div>
+      {editMode ? (
+        <input
+          onChange={onStatusChange}
+          autoFocus={true}
+          onBlur={deactivateEditMode}
+          value={status}
+        ></input>
+      ) : (
+        <div>
+          <span onDoubleClick={activateEditMode}>Status: {props.status || 'No status'}</span>
+          {props.statusError && <div className={s.error}>{props.statusError}</div>}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProfileStatusHooks;

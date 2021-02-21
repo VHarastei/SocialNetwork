@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Preloader from '../../common/Preloader/Preloader';
 import s from './ProfileInfo.module.css';
-import ProfileStatusHooks from './ProfileStatusHooks';
+import ProfileStatus from './ProfileStatus';
 import userPhoto from '../../../assets/images/person.png';
 import ProfileDataForm from './ProfileDataForm';
 import { FORM_ERROR } from 'final-form';
+import Contacts from './ProfileContacts';
 
 const ProfileInfo = ({
   profile,
@@ -28,7 +29,7 @@ const ProfileInfo = ({
 
   const onSubmit = async (formData) => {
     let result = await saveProfile(formData);
-    if(result.resultCode === 0) setEditMode(false);
+    if (result.resultCode === 0) setEditMode(false);
     return { [FORM_ERROR]: result.messages[0] };
   };
   return (
@@ -51,8 +52,7 @@ const ProfileInfo = ({
             }}
           />
         )}
-
-        {isOwner && <ProfileStatusHooks updateStatus={updateStatus} status={status} statusError={statusError}/> }
+        <ProfileStatus {...{ isOwner, updateStatus, status, statusError }} />
       </div>
     </div>
   );
@@ -68,26 +68,8 @@ const ProfileData = ({ profile, isOwner, toggleEditMode }) => {
         <div>My professional skills: {profile.lookingForAJobDescription}</div>
       )}
       <div>About me: {profile.aboutMe}</div>
-      <div>
-        Contacts:
-        {Object.keys(profile.contacts).map((key) => {
-          return (
-            <Contact
-              key={key}
-              contactTitle={key}
-              contactValue={profile.contacts[key]}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-const Contact = ({ contactTitle, contactValue }) => {
-  return (
-    <div className={s.contactItem}>
-      {contactTitle} : {contactValue}
+      <Contacts contacts={profile.contacts} />
+      
     </div>
   );
 };
