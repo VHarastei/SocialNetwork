@@ -6,7 +6,9 @@ let initialState = {
   initialized: false,
 };
 
-let appReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+let appReducer = (state = initialState, action: any): InitialStateType => {
   switch (action.type) {
     case INITIALIZED_SUCCES:
       return {
@@ -18,12 +20,16 @@ let appReducer = (state = initialState, action) => {
   }
 };
 
-export const initializedSucces = () => ({
+type InitializedSuccesType = {
+  type: typeof INITIALIZED_SUCCES;
+};
+
+export const initializedSucces = (): InitializedSuccesType => ({
   type: INITIALIZED_SUCCES,
 });
 
 export const initializeApp = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     await dispatch(getAuthUserData());
     dispatch(initializedSucces());
   };
