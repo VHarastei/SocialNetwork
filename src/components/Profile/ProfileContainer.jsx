@@ -28,6 +28,18 @@ import { compose } from 'redux';
 //   }
 // }
 
+// type MapStatePropsType = {
+//   match: any;
+//   authorizedUserId: number;
+//   history: any;
+// };
+
+// type MapDispatchPropsType = {
+//   getStatus,
+//   getUserProfile,
+// };
+
+
 const ProfileContainerH = ({
   match,
   authorizedUserId,

@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  //follow,
   setCurrentPage,
-  //unfollow,
   requestUsers,
   toggleFollow,
 } from '../../redux/usersReducer';
@@ -17,12 +15,33 @@ import {
   getIsFetching,
   getFollowingInProgress,
 } from '../../redux/usersSelectors';
+import { userType } from '../../types/types';
+import { AppStateType } from '../../redux/reduxStore';
 
-class UsersAPIContainer extends React.Component {
+type MapStatePropsType = {
+  users:Array<userType>;
+  pageSize: number;
+  totalItemsCount: number;
+  currentPage: number;
+  isFetching: boolean;
+  followingInProgress: Array<number>;
+};
+
+type MapDispatchPropsType = {
+  toggleFollow: (userId: number, followed: boolean) => void;
+  setCurrentPage: (pageSize: number) => void;
+  requestUsers: (currentPage: number, pageSize: number) => void;
+};
+
+type OwnPropsType = {};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
+
+class UsersAPIContainer extends React.Component<PropsType> {
   componentDidMount() {
     this.props.requestUsers(this.props.currentPage, this.props.pageSize);
   }
-  onChangeCurrentPage = (pageNumber) => {
+  onChangeCurrentPage = (pageNumber: number) => {
     this.props.setCurrentPage(pageNumber);
     this.props.requestUsers(pageNumber, this.props.pageSize);
   };
@@ -44,7 +63,7 @@ class UsersAPIContainer extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     users: getUsers(state),
     pageSize: getPageSize(state),
@@ -55,10 +74,13 @@ let mapStateToProps = (state) => {
   };
 };
 
-const UsersContainer = connect(mapStateToProps, {
-  toggleFollow,
-  setCurrentPage,
-  requestUsers,
-})(UsersAPIContainer);
+const UsersContainer = connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(
+  mapStateToProps,
+  {
+    toggleFollow,
+    setCurrentPage,
+    requestUsers,
+  }
+)(UsersAPIContainer);
 
 export default UsersContainer;

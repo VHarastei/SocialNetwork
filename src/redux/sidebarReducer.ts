@@ -1,14 +1,10 @@
-type FriendsType = {
-  id: number;
-  name: string;
-};
+import { FriendsType } from './../types/types';
 
 let initialState = {
   friends: [
     { id: 1, name: 'Rosdick' },
     { id: 2, name: 'Kerets' },
-    { id: 3, name: 'booba' },
-  ] as Array<FriendsType>
+  ] as Array<FriendsType>,
 };
 
 let sidebarReducer = (state = initialState, action: any) => {

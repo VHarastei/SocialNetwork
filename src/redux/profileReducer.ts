@@ -1,3 +1,4 @@
+import { PhotosType, PostsType, ProfileType } from './../types/types';
 import { profileAPI } from '../api/api';
 
 const ADD_POST = 'SocialNetwork/profile/ADD-POST';
@@ -5,37 +6,6 @@ const SET_USER_PROFILE = 'SocialNetwork/profile/SET_USER_PROFILE';
 const SET_STATUS = 'SocialNetwork/profile/SET_STATUS';
 const SET_STATUS_ERROR = 'SocialNetwork/profile/SET_STATUS_ERROR';
 const SAVE_PHOTO_SUCCESS = 'SocialNetwork/profile/SAVE_PHOTO_SUCCESS';
-
-type PostsType = {
-  id: number;
-  message: string;
-  likesCount: number;
-};
-
-type ContactsType = {
-  github: string;
-  vk: string;
-  facebook: string;
-  instagram: string;
-  twitter: string;
-  website: string;
-  youtube: string;
-  mainLink: string;
-};
-
-export type PhotosType = {
-  small: string;
-  large: string;
-};
-
-type ProfileType = {
-  userId: number;
-  lookingForAJob: boolean;
-  lookingForAJobDescription: string;
-  fullName: string;
-  contacts: ContactsType;
-  photos: PhotosType;
-};
 
 let initialState = {
   posts: [
@@ -84,7 +54,7 @@ type AddPostType = {
   type: typeof ADD_POST;
   newPostText: string;
 };
-export const addPostActionCreator = (newPostText: string): AddPostType => ({
+export const addPost = (newPostText: string): AddPostType => ({
   type: ADD_POST,
   newPostText,
 });

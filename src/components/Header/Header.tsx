@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import s from './Header.module.css';
 import { NavLink } from 'react-router-dom';
 
-const Header = (props) => {
+type PropsType = {
+  isAuth: boolean;
+  login: string | null;
+  logout: () => void;
+}
+
+const Header: FC<PropsType> = (props) => {
   return (
     <header className={s.header}>
       <span className={s.appName}>NETWORK</span>

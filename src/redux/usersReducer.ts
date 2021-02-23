@@ -1,4 +1,4 @@
-import { PhotosType } from './profileReducer';
+import { userType } from './../types/types';
 import { usersAPI } from '../api/api';
 
 const TOGGLE_FOLLOWING = 'SocialNetwork/users/TOGGLE_FOLLOWING';
@@ -8,16 +8,8 @@ const SET_TOTAL_USERS_COUNT = 'SocialNetwork/users/SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'SocialNetwork/users/TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'SocialNetwork/users/TOGGLE_IS_FOLLOWING_PROGRESS';
 
-type usersType = {
-  id: number;
-  name: string;
-  status: string;
-  photos: PhotosType;
-  followed: boolean;
-};
-
 let initialState = {
-  users: [] as Array<usersType>,
+  users: [] as Array<userType>,
   pageSize: 5,
   totalUsersCount: 0,
   currentPage: 1,
@@ -81,9 +73,9 @@ export const toggleFollowSucceded = (userId: number): toggleFollowSuccededType =
 
 type setUsersType = {
   type: typeof SET_USERS;
-  users: usersType;
+  users: userType;
 };
-export const setUsers = (users: usersType): setUsersType => ({ type: SET_USERS, users });
+export const setUsers = (users: userType): setUsersType => ({ type: SET_USERS, users });
 
 type setCurrentPageType = {
   type: typeof SET_CURRENT_PAGE;

@@ -1,13 +1,6 @@
-const SEND_MESSAGE = 'SocialNetwork/dialog/SEND_MESSAGE';
+import { DialogsType, MessagesType } from '../types/types';
 
-type DialogsType = {
-  id: number;
-  name: string;
-};
-type MessagesType = {
-  id: number;
-  message: string;
-};
+const SEND_MESSAGE = 'SocialNetwork/dialog/SEND_MESSAGE';
 
 let initialState = {
   dialogs: [
@@ -42,7 +35,7 @@ type SendMessageType = {
   newMessageText: string;
 };
 
-export const sendMessageCreator = (newMessageText: string): SendMessageType => ({
+export const sendMessage = (newMessageText: string): SendMessageType => ({
   type: SEND_MESSAGE,
   newMessageText,
 });

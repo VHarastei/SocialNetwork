@@ -1,11 +1,7 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
-import {
-  composeValidators,
-  maxLength,
-  required,
-} from '../../utils/validators/validators';
+import { composeValidators, maxLength, required } from '../../utils/validators/validators';
 import s from './Login.module.css';
 import { login } from '../../redux/authReducer';
 import { Redirect } from 'react-router-dom';
@@ -23,10 +19,7 @@ const Login = (props) => {
         onSubmit={props.onSubmit}
         render={({ submitError, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <Field
-              name="email"
-              validate={composeValidators(required, maxLength(30))}
-            >
+            <Field name="email" validate={composeValidators(required, maxLength(30))}>
               {({ input, meta }) => (
                 <div className={s.fieldControl + ' ' + s.error}>
                   <input type="text" placeholder="Email" {...input} />
@@ -34,10 +27,7 @@ const Login = (props) => {
                 </div>
               )}
             </Field>
-            <Field
-              name="password"
-              validate={composeValidators(required, maxLength(30))}
-            >
+            <Field name="password" validate={composeValidators(required, maxLength(30))}>
               {({ input, meta }) => (
                 <div className={s.fieldControl + ' ' + s.error}>
                   <input type="password" placeholder="Password" {...input} />
@@ -60,11 +50,7 @@ const Login = (props) => {
                 <Field name="captcha" validate={required}>
                   {({ input, meta }) => (
                     <div className={s.fieldControl + ' ' + s.error}>
-                      <input
-                        type="text"
-                        placeholder="Enter captcha"
-                        {...input}
-                      />
+                      <input type="text" placeholder="Enter captcha" {...input} />
                       {meta.error && meta.touched && <span>{meta.error}</span>}
                     </div>
                   )}
@@ -90,12 +76,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (formData) => {
       return dispatch(
-        login(
-          formData.email,
-          formData.password,
-          formData.rememberMe,
-          formData.captcha
-        )
+        login(formData.email, formData.password, formData.rememberMe, formData.captcha)
       ).then((err) => {
         return { [FORM_ERROR]: err.messages[0] };
       });

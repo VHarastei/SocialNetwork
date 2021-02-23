@@ -1,30 +1,39 @@
-import React from 'react';
+import React, { FC } from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import { Form, Field } from 'react-final-form';
 import { maxLength } from '../../../utils/validators/validators';
+import { PostsType } from '../../../types/types';
 
-const MyPosts = (props) => {
-  let state = props.profilePage;
-  let postElements = state.posts.map((p) => (
-    <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount} />
+type PropsType = {
+  posts: Array<PostsType>;
+  addPost: (newPostText: string) => void;
+};
+
+const MyPosts: FC<PropsType> = ({ posts, addPost }) => {
+  let postElements = posts.map((p) => (
+    <Post key={p.id} message={p.message} likesCount={p.likesCount} />
   ));
   return (
     <div className={s.postsBlock}>
       <h2>my posts</h2>
       <div>
-        <AddNewPostForm addPost={props.addPost} />
+        <AddNewPostForm addPost={addPost} />
       </div>
       <div className={s.posts}>{postElements}</div>
     </div>
   );
 };
 
-let AddNewPostForm = (props) => {
+type AddNewPostFormPropsType = {
+  addPost: (newPostText: string) => void;
+};
+
+let AddNewPostForm: FC<AddNewPostFormPropsType> = ({ addPost }) => {
   return (
     <Form
       onSubmit={(obj) => {
-        props.addPost(obj.newPostText);
+        addPost(obj.newPostText);
         obj.newPostText = '';
       }}
     >

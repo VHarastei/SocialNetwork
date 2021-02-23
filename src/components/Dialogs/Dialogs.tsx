@@ -1,39 +1,41 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Field, Form } from 'react-final-form';
-import { Redirect } from 'react-router-dom';
+import { DialogsType, MessagesType } from '../../types/types';
 import { maxLength } from '../../utils/validators/validators';
 import DialogItem from './DialogItem/DialogItem';
 import s from './Dialogs.module.css';
 import Message from './Message/Message';
 
-const Dialogs = (props) => {
-  let dialogsPage = props.dialogsPage;
+type PropsType = {
+  dialogs: Array<DialogsType>;
+  messages: Array<MessagesType>;
+  sendMessage: (newMessageText: string) => void;
+};
 
-  let dialogElements = dialogsPage.dialogs.map((d) => (
-    <DialogItem key={d.id} name={d.name} id={d.id} />
-  ));
-  let messageElements = dialogsPage.messages.map((m) => (
-    <Message key={m.id} message={m.message} id={m.id} />
-  ));
-
-  if (!props.isAuth) return <Redirect to={'/login'} />;
+const Dialogs: FC<PropsType> = ({ dialogs, messages, sendMessage }) => {
+  let dialogElements = dialogs.map((d) => <DialogItem key={d.id} name={d.name} id={d.id} />);
+  let messageElements = messages.map((m) => <Message key={m.id} message={m.message} />);
 
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{dialogElements}</div>
       <div>
         <div className={s.messages}>{messageElements}</div>
-        <SendMessageForm sendMessage={props.sendMessage} />
+        <SendMessageForm sendMessage={sendMessage} />
       </div>
     </div>
   );
 };
 
-let SendMessageForm = (props) => {
+type SendMessageFormPropsType = {
+  sendMessage: (newMessageText: string) => void;
+};
+
+let SendMessageForm: FC<SendMessageFormPropsType> = ({ sendMessage }) => {
   return (
     <Form
       onSubmit={(obj) => {
-        props.sendMessage(obj.newMessageText);
+        sendMessage(obj.newMessageText);
         obj.newMessageText = '';
       }}
     >
