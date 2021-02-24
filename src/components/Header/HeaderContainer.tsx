@@ -19,7 +19,7 @@ const HeaderContainer: FC<PropsType> = (props) => {
   return <Header {...props} />;
 };
 
-let mapStateToProps = (state: AppStateType) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     isAuth: state.auth.isAuth,
     login: state.auth.login,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Form, Field } from 'react-final-form';
 import { connect } from 'react-redux';
 import { composeValidators, maxLength, required } from '../../utils/validators/validators';
@@ -6,9 +6,28 @@ import s from './Login.module.css';
 import { login } from '../../redux/authReducer';
 import { Redirect } from 'react-router-dom';
 import { FORM_ERROR } from 'final-form';
+import { AppStateType } from '../../redux/reduxStore';
 
-const Login = (props) => {
-  if (props.isAuth) {
+type FormDataType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string | null;
+};
+
+type MapStatePropsType = {
+  isAuth: boolean;
+  captchaUrl: null | string;
+};
+
+type MapDispatchPropsType = {
+  onSubmit: (formData: FormDataType) => void;
+};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType;
+
+const Login: FC<PropsType> = ({ isAuth, onSubmit, captchaUrl }) => {
+  if (isAuth) {
     return <Redirect to="/profile" />;
   }
 
@@ -16,7 +35,7 @@ const Login = (props) => {
     <div>
       <h1>login</h1>
       <Form
-        onSubmit={props.onSubmit}
+        onSubmit={onSubmit}
         render={({ submitError, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <Field name="email" validate={composeValidators(required, maxLength(30))}>
@@ -44,9 +63,9 @@ const Login = (props) => {
               )}
             </Field>
             {submitError && <div className={s.error}>{submitError}</div>}
-            {props.captchaUrl && (
+            {captchaUrl && (
               <div>
-                <img src={props.captchaUrl} alt="captcha" />
+                <img src={captchaUrl} alt="captcha" />
                 <Field name="captcha" validate={required}>
                   {({ input, meta }) => (
                     <div className={s.fieldControl + ' ' + s.error}>
@@ -67,21 +86,24 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
   isAuth: state.auth.isAuth,
   captchaUrl: state.auth.captchaUrl,
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): MapDispatchPropsType => {
   return {
     onSubmit: (formData) => {
       return dispatch(
         login(formData.email, formData.password, formData.rememberMe, formData.captcha)
-      ).then((err) => {
-        return { [FORM_ERROR]: err.messages[0] };
+      ).then((err: string) => {
+        return { [FORM_ERROR]: err };
       });
     },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

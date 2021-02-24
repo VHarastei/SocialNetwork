@@ -63,7 +63,7 @@ class UsersAPIContainer extends React.Component<PropsType> {
   }
 }
 
-let mapStateToProps = (state: AppStateType) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     users: getUsers(state),
     pageSize: getPageSize(state),

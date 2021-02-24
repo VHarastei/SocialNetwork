@@ -16,9 +16,10 @@ let initialState = {
   newMessageText: '',
 };
 
-type InitialStateType = typeof initialState;
+type ActionsTypes = SendMessageType;
 
-let dialogsReducer = (state = initialState, action: any): InitialStateType => {
+type InitialStateType = typeof initialState;
+let dialogsReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case SEND_MESSAGE:
       return {
