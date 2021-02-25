@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import styles from './Users.module.css';
 import userPhoto from '../../assets/images/person.png';
 import { NavLink } from 'react-router-dom';
-import { userType } from '../../types/types';
+import { UserType } from '../../types/types';
 
 type PropsType = {
-  user: userType;
+  user: UserType;
   followingInProgress: Array<number>;
   toggleFollow: (userId: number, followed: boolean) => void;
 };

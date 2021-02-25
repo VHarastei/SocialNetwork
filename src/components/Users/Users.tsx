@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import styles from './Users.module.css';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
-import { userType } from '../../types/types';
+import { UserType } from '../../types/types';
 
 
 type PropsType = {
-  users:Array<userType>;
+  users:Array<UserType>;
   pageSize: number;
   totalItemsCount: number;
   currentPage: number;

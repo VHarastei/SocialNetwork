@@ -43,7 +43,7 @@ export type FriendsType = {
   name: string;
 };
 
-export type userType = {
+export type UserType = {
   id: number;
   name: string;
   status: string;

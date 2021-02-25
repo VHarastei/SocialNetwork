@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  setCurrentPage,
+  actions,
   requestUsers,
   toggleFollow,
 } from '../../redux/usersReducer';
@@ -15,11 +15,13 @@ import {
   getIsFetching,
   getFollowingInProgress,
 } from '../../redux/usersSelectors';
-import { userType } from '../../types/types';
+import { UserType } from '../../types/types';
 import { AppStateType } from '../../redux/reduxStore';
 
+let setCurrentPage = actions.setCurrentPage
+
 type MapStatePropsType = {
-  users:Array<userType>;
+  users:Array<UserType>;
   pageSize: number;
   totalItemsCount: number;
   currentPage: number;

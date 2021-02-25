@@ -1,6 +1,8 @@
 import { ResultCodeCaptchaEnum } from './../api/api';
 import { ThunkAction } from 'redux-thunk';
-import { authAPI, ResultCodesEnum, securityAPI } from '../api/api';
+import { ResultCodesEnum } from '../api/api';
+import { securityAPI } from "../api/securityAPI";
+import { authAPI } from "../api/authAPI";
 import { AppStateType } from './reduxStore';
 
 const SET_USER_DATA = 'SocialNetwork/auth/SET_USER_DATA';
