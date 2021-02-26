@@ -1,3 +1,4 @@
+import { InferActionsTypes } from './reduxStore';
 import { DialogsType, MessagesType } from '../types/types';
 
 const SEND_MESSAGE = 'SocialNetwork/dialog/SEND_MESSAGE';
@@ -16,9 +17,9 @@ let initialState = {
   newMessageText: '',
 };
 
-type ActionsTypes = SendMessageType;
-
+type ActionsTypes = InferActionsTypes<typeof actions>;
 type InitialStateType = typeof initialState;
+
 let dialogsReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case SEND_MESSAGE:
@@ -31,14 +32,11 @@ let dialogsReducer = (state = initialState, action: ActionsTypes): InitialStateT
   }
 };
 
-type SendMessageType = {
-  type: typeof SEND_MESSAGE;
-  newMessageText: string;
+export const actions = {
+  sendMessage: (newMessageText: string) =>
+    ({
+      type: SEND_MESSAGE,
+      newMessageText,
+    } as const),
 };
-
-export const sendMessage = (newMessageText: string): SendMessageType => ({
-  type: SEND_MESSAGE,
-  newMessageText,
-});
-
 export default dialogsReducer;

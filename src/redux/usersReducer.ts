@@ -1,7 +1,6 @@
 import { UserType } from './../types/types';
 import { usersAPI } from '../api/usersAPI';
-import { ThunkAction } from 'redux-thunk';
-import { AppStateType, InferActionsTypes } from './reduxStore';
+import { InferActionsTypes, BaseThunkType } from './reduxStore';
 
 const TOGGLE_FOLLOWING = 'SocialNetwork/users/TOGGLE_FOLLOWING';
 const SET_USERS = 'SocialNetwork/users/SET_USERS';
@@ -18,9 +17,10 @@ let initialState = {
   isFetching: true,
   followingInProgress: [] as Array<number>,
 };
-
 type ActionsTypes = InferActionsTypes<typeof actions>;
 type InitialStateType = typeof initialState;
+type ThunkType = BaseThunkType<ActionsTypes>;
+
 let usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case TOGGLE_FOLLOWING:
@@ -94,7 +94,6 @@ export const actions = {
       userId,
     } as const),
 };
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
 
 export const requestUsers = (currentPage: number, pageSize: number): ThunkType => async (
   dispatch

@@ -38,6 +38,15 @@ export type ProfileType = {
   photos: PhotosType;
 };
 
+// export type ProfileType = {
+//   userId: number | null;
+//   lookingForAJob: boolean;
+//   lookingForAJobDescription: string | null;
+//   fullName: string | null;
+//   contacts: ContactsType;
+//   photos: PhotosType;
+// };
+
 export type FriendsType = {
   id: number;
   name: string;

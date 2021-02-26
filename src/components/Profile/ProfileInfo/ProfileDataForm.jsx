@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Field, Form } from 'react-final-form';
+import { ProfileType } from '../../../types/types';
 import s from './ProfileInfo.module.css';
+
+// type PropsType = {
+//   profile: ProfileType
+//   onSubmit: (profile: ProfileType) => any
+// }
 
 const ProfileDataForm = ({ profile, onSubmit }) => {
   return (

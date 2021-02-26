@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
-import { addPost } from '../../../redux/profileReducer';
+import { actions } from '../../../redux/profileReducer';
 import { AppStateType } from '../../../redux/reduxStore';
 import { PostsType } from '../../../types/types';
 import MyPosts from './MyPosts';
+
+let addPost =  actions.addPost
 
 type MapStatePropsType = {
   posts: Array<PostsType>;
