@@ -32,9 +32,9 @@ type AddNewPostFormPropsType = {
 let AddNewPostForm: FC<AddNewPostFormPropsType> = ({ addPost }) => {
   return (
     <Form
-      onSubmit={(obj) => {
-        addPost(obj.newPostText);
-        obj.newPostText = '';
+      onSubmit={(FormData: {newPostText: string}) => {
+        addPost(FormData.newPostText);
+        FormData.newPostText = '';
       }}
     >
       {({ handleSubmit }) => (

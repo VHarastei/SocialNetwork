@@ -16,9 +16,8 @@ const initialState = {
     { id: 4, message: '11121 Post', likesCount: 5 },
   ] as Array<PostsType>,
   profile: null as ProfileType | null,
-  status: null as string | null,
-  statusError: null as string | null,
-  newPostText: '',
+  status: '',
+  statusError: ''
 };
 
 type ActionsTypes = InferActionsTypes<typeof actions>;
@@ -36,7 +35,6 @@ let profileReducer = (state = initialState, action: ActionsTypes): InitialStateT
       return {
         ...state,
         posts: [...state.posts, newPost],
-        newPostText: '',
       };
     }
     case SET_USER_PROFILE: {
@@ -56,9 +54,8 @@ let profileReducer = (state = initialState, action: ActionsTypes): InitialStateT
     case SAVE_PHOTO_SUCCESS: {
       return {
         ...state,
-        profile: { ...state.profile, photos: action.photos },
+        profile: { ...state.profile, photos: action.photos } as ProfileType
       };
-      //photos: action.photos
     }
     default:
       return state;
@@ -71,17 +68,17 @@ export const actions = {
       type: ADD_POST,
       newPostText,
     } as const),
-  setUserProfile: (profile: ProfileType) =>
+  setUserProfile: (profile: any) =>
     ({
       type: SET_USER_PROFILE,
       profile,
     } as const),
-  setStatus: (status: string | null) =>
+  setStatus: (status: string) =>
     ({
       type: SET_STATUS,
       payload: { status },
     } as const),
-  setStatusError: (statusError: string | null) =>
+  setStatusError: (statusError: string) =>
     ({
       type: SET_STATUS_ERROR,
       payload: { statusError },
@@ -92,6 +89,12 @@ export const actions = {
       photos,
     } as const),
 };
+
+export const biba = () => async () => {
+  const data = await profileAPI.getProfile(2);
+  //dispatch(actions.setUserProfile(data));
+  console.log(data);
+}
 
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
@@ -108,7 +111,7 @@ export const updateStatus = (status: string): ThunkType => async (dispatch) => {
     const data = await profileAPI.updateStatus(status);
     if (data.resultCode === 0) {
       dispatch(actions.setStatus(status));
-      dispatch(actions.setStatusError(null));
+      dispatch(actions.setStatusError(''));
     } else {
       dispatch(actions.setStatusError(data.messages[0]));
     }

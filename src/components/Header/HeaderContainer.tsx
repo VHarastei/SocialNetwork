@@ -13,7 +13,7 @@ type MapDispatchPropsType = {
   logout: () => void;
 };
 
-type PropsType = MapStatePropsType & MapDispatchPropsType;
+export type PropsType = MapStatePropsType & MapDispatchPropsType;
 
 const HeaderContainer: FC<PropsType> = (props) => {
   return <Header {...props} />;

@@ -30,12 +30,13 @@ export type PhotosType = {
 };
 
 export type ProfileType = {
-  userId?: number | null;
-  lookingForAJob?: boolean;
-  lookingForAJobDescription?: string;
-  fullName?: string;
-  contacts?: ContactsType;
+  userId: number;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  fullName: string;
+  contacts: ContactsType;
   photos: PhotosType;
+  aboutMe: string
 };
 
 // export type ProfileType = {
@@ -59,3 +60,8 @@ export type UserType = {
   photos: PhotosType;
   followed: boolean;
 };
+
+export type FilterType = {
+  term: string
+  friend: boolean | null
+}

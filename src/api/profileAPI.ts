@@ -8,6 +8,7 @@ type SavePhotoType = {
 export const profileAPI = {
   getProfile(userId: number) {
     return instanse.get<ProfileType>(`profile/${userId}`).then((response) => response.data);
+
   },
   getStatus(userId: number) {
     return instanse.get<string>(`profile/status/${userId}`).then((response) => response.data);

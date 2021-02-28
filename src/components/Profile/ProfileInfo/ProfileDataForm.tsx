@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Field, Form } from 'react-final-form';
-import { ProfileType } from '../../../types/types';
+import { ContactsType, ProfileType } from '../../../types/types';
 import s from './ProfileInfo.module.css';
 
-// type PropsType = {
-//   profile: ProfileType
-//   onSubmit: (profile: ProfileType) => any
-// }
+type PropsType = {
+  profile: ProfileType;
+  onSubmit: (profile: ProfileType) => any;
+};
 
-const ProfileDataForm = ({ profile, onSubmit }) => {
+const ProfileDataForm: FC<PropsType> = ({ profile, onSubmit }) => {
   return (
     <Form
       initialValues={profile}
@@ -51,26 +51,36 @@ const ProfileDataForm = ({ profile, onSubmit }) => {
               </div>
             )}
           </Field>
-          <div>
-            Contacts:
-            {Object.keys(profile.contacts).map((key) => {
-              return (
-                <div key={key} className={s.contactItem}>
-                  {key}:
-                  <Field name={'contacts.' + key}>
-                    {({ input }) => (
-                      <div>
-                        <input placeholder={key} type="text" {...input} />
-                      </div>
-                    )}
-                  </Field>
-                </div>
-              );
-            })}
-          </div>
+          <Contacts contacts={profile.contacts}/>
         </form>
       )}
     ></Form>
+  );
+};
+
+type ContactsPropsType = {
+  contacts: ContactsType;
+};
+
+const Contacts: FC<ContactsPropsType> = ({ contacts }) => {
+  return (
+    <div>
+      Contacts:
+      {Object.keys(contacts).map((key) => {
+        return (
+          <div key={key} className={s.contactItem}>
+            {key}:
+            <Field name={'contacts.' + key}>
+              {({ input }) => (
+                <div>
+                  <input placeholder={key} type="text" {...input} />
+                </div>
+              )}
+            </Field>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 

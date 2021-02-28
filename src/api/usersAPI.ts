@@ -8,9 +8,9 @@ export type GetUsersType = {
 };
 
 export const usersAPI = {
-  getUsers(currentPage = 1, pageSize = 5) {
+  getUsers(currentPage = 1, pageSize = 5, term = '', friend: null | boolean = null) {
     return instanse
-      .get<GetUsersType>(`users?page=${currentPage}&count=${pageSize}`)
+      .get<GetUsersType>(`users?page=${currentPage}&count=${pageSize}` + (term? `&term=${term}`: '')  + (friend !== null? `&friend=${friend}`: ''))
       .then((response) => response.data);
   },
   follow(userId: number) {

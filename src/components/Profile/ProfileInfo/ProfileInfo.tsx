@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import Preloader from '../../common/Preloader/Preloader';
 import s from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus';
@@ -6,8 +6,19 @@ import userPhoto from '../../../assets/images/person.png';
 import ProfileDataForm from './ProfileDataForm';
 import { FORM_ERROR } from 'final-form';
 import Contacts from './ProfileContacts';
+import { ProfileType } from '../../../types/types';
 
-const ProfileInfo = ({
+type PropsType = {
+  profile: ProfileType | null
+  isOwner: boolean
+  savePhoto: (file: File) => void
+  updateStatus: (status: string) => void
+  status: string
+  statusError: string
+  saveProfile: (FormData: ProfileType) => Promise<any>
+}
+
+const ProfileInfo: FC<PropsType> = ({
   profile,
   isOwner,
   savePhoto,
@@ -21,14 +32,14 @@ const ProfileInfo = ({
     return <Preloader />;
   }
 
-  const onSavePhoto = (e) => {
-    if (e.target.files.length) {
+  const onSavePhoto = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
       savePhoto(e.target.files[0]);
     }
   };
 
-  const onSubmit = async (formData) => {
-    let result = await saveProfile(formData);
+  const onSubmit = async (formData: ProfileType) => {
+    let result: any = await saveProfile(formData);
     if (result.resultCode === 0) setEditMode(false);
     return { [FORM_ERROR]: result.messages[0] };
   };
@@ -58,7 +69,13 @@ const ProfileInfo = ({
   );
 };
 
-const ProfileData = ({ profile, isOwner, toggleEditMode }) => {
+type ProfileDataPropsType = {
+  profile: ProfileType
+  isOwner: boolean
+  toggleEditMode: () => void
+}
+
+const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggleEditMode }) => {
   return (
     <div>
       {isOwner && <button onClick={toggleEditMode}>edit</button>}
