@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ProfileType } from '../../types/types';
-import MyPostsContainer from './MyPosts/MyPostsContainer';
+import MyPosts from './MyPosts/MyPosts';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 type PropsType = {
@@ -18,7 +18,7 @@ const Profile: FC<PropsType> = (props) => {
     <div>
      
       <ProfileInfo {...props} />
-      {props.isOwner && <MyPostsContainer />}
+      {props.isOwner && <MyPosts />}
     </div>
   );
 };

@@ -1,38 +1,48 @@
+import { Field, Form, Formik } from 'formik';
 import React, { FC } from 'react';
-import styles from './Users.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions, requestUsers } from '../../redux/usersReducer';
+import {
+  getCurrentPage,
+  getFilter,
+  getFollowingInProgress,
+  getPageSize,
+  getTotalUsersCount,
+  getUsers,
+} from '../../redux/usersSelectors';
+import { FilterType } from '../../types/types';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
-import { FilterType, UserType } from '../../types/types';
-import { Field, Form, Formik } from 'formik';
+import styles from './Users.module.css';
 
-type PropsType = {
-  users: Array<UserType>;
-  pageSize: number;
-  totalItemsCount: number;
-  currentPage: number;
-  followingInProgress: Array<number>;
-  toggleFollow: (userId: number, followed: boolean) => void;
-  onChangeCurrentPage: (pageNumber: number) => void;
-  onSearch: (filter: FilterType) => void;
-  //filter: FilterType | null
-};
+const Users: FC = () => {
+  const users = useSelector(getUsers);
+  const pageSize = useSelector(getPageSize);
+  const totalUsersCount = useSelector(getTotalUsersCount);
+  const currentPage = useSelector(getCurrentPage);
+  const followingInProgress = useSelector(getFollowingInProgress);
+  const filter = useSelector(getFilter);
 
-const Users: FC<PropsType> = ({
-  users,
-  pageSize,
-  totalItemsCount,
-  currentPage,
-  toggleFollow,
-  onChangeCurrentPage,
-  followingInProgress,
-  onSearch,
-  //filter
-}) => {
+  const dispatch = useDispatch();
+
+  const toggleFollow = (userId: number, followed: boolean) => {
+    dispatch(toggleFollow(userId, followed));
+  };
+
+  const onSearch = (filter: FilterType) => {
+    dispatch(requestUsers(1, pageSize, filter));
+  };
+
+  const onChangeCurrentPage = (pageNumber: number) => {
+    dispatch(actions.setCurrentPage(pageNumber));
+    dispatch(requestUsers(pageNumber, pageSize, filter));
+  };
+
   return (
     <div>
       <Paginator
         styles={styles}
-        totalItemsCount={totalItemsCount}
+        totalItemsCount={totalUsersCount}
         pageSize={pageSize}
         onChangeCurrentPage={onChangeCurrentPage}
         currentPage={currentPage}
@@ -55,28 +65,30 @@ export default Users;
 
 type SearchFormType = {
   onSearch: (filter: FilterType) => void;
-  //filter: FilterType | null
 };
 
+type FriendFormType = 'null' | 'true' | 'false';
 type ValuesFormType = {
   term: string;
-  friend: 'null' | 'true' | 'false';
+  friend: FriendFormType;
 };
 
 const SearchForm: FC<SearchFormType> = ({ onSearch }) => {
+  const filter = useSelector(getFilter);
+
+
   return (
     <Formik
-      initialValues={{ term: '', friend: 'null' }}
+      enableReinitialize
+      initialValues={{ term: filter.term, friend: String(filter.friend) as FriendFormType }}
       onSubmit={(
         values: ValuesFormType,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
       ) => {
-        //console.log(values);
         const filter: FilterType = {
           term: values.term,
           friend: values.friend === 'null' ? null : values.friend === 'true' ? true : false,
         };
-        //console.log(filter);
         onSearch(filter);
         setSubmitting(false);
       }}

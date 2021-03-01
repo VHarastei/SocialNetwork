@@ -1,12 +1,12 @@
+import { FORM_ERROR } from 'final-form';
 import React, { FC } from 'react';
-import { Form, Field } from 'react-final-form';
-import { connect } from 'react-redux';
+import { Field, Form } from 'react-final-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { login } from '../../redux/authReducer';
+import { AppStateType } from '../../redux/reduxStore';
 import { composeValidators, maxLength, required } from '../../utils/validators/validators';
 import s from './Login.module.css';
-import { login } from '../../redux/authReducer';
-import { Redirect } from 'react-router-dom';
-import { FORM_ERROR } from 'final-form';
-import { AppStateType } from '../../redux/reduxStore';
 
 type FormDataType = {
   email: string;
@@ -15,18 +15,18 @@ type FormDataType = {
   captcha: string | null;
 };
 
-type MapStatePropsType = {
-  isAuth: boolean;
-  captchaUrl: null | string;
-};
+const Login: FC= () => {
+  const isAuth = useSelector((state: AppStateType) => state.auth.isAuth);
+  const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl);
+  const dispatch = useDispatch();
 
-type MapDispatchPropsType = {
-  onSubmit: (formData: FormDataType) => void;
-};
+  const onSubmit = async (formData: FormDataType) => {
+    let res = await dispatch(
+      login(formData.email, formData.password, formData.rememberMe, formData.captcha)
+    );
+    return { [FORM_ERROR]: res };
+  };
 
-type PropsType = MapStatePropsType & MapDispatchPropsType;
-
-const Login: FC<PropsType> = ({ isAuth, onSubmit, captchaUrl }) => {
   if (isAuth) {
     return <Redirect to="/profile" />;
   }
@@ -86,24 +86,4 @@ const Login: FC<PropsType> = ({ isAuth, onSubmit, captchaUrl }) => {
   );
 };
 
-const mapStateToProps = (state: AppStateType) => ({
-  isAuth: state.auth.isAuth,
-  captchaUrl: state.auth.captchaUrl,
-});
-
-const mapDispatchToProps = (dispatch: any): MapDispatchPropsType => {
-  return {
-    onSubmit: (formData) => {
-      return dispatch(
-        login(formData.email, formData.password, formData.rememberMe, formData.captcha)
-      ).then((err: string) => {
-        return { [FORM_ERROR]: err };
-      });
-    },
-  };
-};
-
-export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default Login

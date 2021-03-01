@@ -1,103 +1,72 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { actions, requestUsers, toggleFollow } from '../../redux/usersReducer';
-import Users from './Users';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { requestUsers } from '../../redux/usersReducer';
+import { getCurrentPage, getFilter, getIsFetching, getPageSize } from '../../redux/usersSelectors';
 import Preloader from '../common/Preloader/Preloader';
-import {
-  getUsers,
-  getPageSize,
-  getTotalUsersCount,
-  getCurrentPage,
-  getIsFetching,
-  getFollowingInProgress,
-  getFilter,
-} from '../../redux/usersSelectors';
-import { FilterType, UserType } from '../../types/types';
-import { AppStateType } from '../../redux/reduxStore';
+import Users from './Users';
+import * as queryString from 'querystring';
 
-let setCurrentPage = actions.setCurrentPage;
+const UserPage = () => {
+  const isFetching = useSelector(getIsFetching);
+  const pageSize = useSelector(getPageSize);
+  const currentPage = useSelector(getCurrentPage);
+  const filter = useSelector(getFilter);
 
-type MapStatePropsType = {
-  users: Array<UserType>;
-  pageSize: number;
-  totalItemsCount: number;
-  currentPage: number;
-  isFetching: boolean;
-  followingInProgress: Array<number>;
-  filter: FilterType;
-};
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-type MapDispatchPropsType = {
-  toggleFollow: (userId: number, followed: boolean) => void;
-  setCurrentPage: (pageSize: number) => void;
-  requestUsers: (
-    currentPage: number,
-    pageSize: number,
-    term: string,
-    friend: null | boolean
-  ) => void;
-};
-
-type OwnPropsType = {};
-
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
-
-class UsersAPIContainer extends React.Component<PropsType> {
-  componentDidMount() {
-    this.props.requestUsers(this.props.currentPage, this.props.pageSize, '', null);
-  }
-  onChangeCurrentPage = (pageNumber: number) => {
-    this.props.setCurrentPage(pageNumber);
-    this.props.requestUsers(
-      pageNumber,
-      this.props.pageSize,
-      this.props.filter.term,
-      this.props.filter.friend
-    );
-  };
-  onSearch = (filter: FilterType) => {
-    this.props.requestUsers(1, this.props.pageSize, filter.term, filter.friend);
+  type QueryParamsType = {
+    term?: string;
+    page?: string;
+    friend?: string;
   };
 
-  render() {
-    return (
-      <>
-        {this.props.isFetching ? <Preloader /> : null}
-        <Users
-          //filter={this.props.filter}
-          users={this.props.users}
-          pageSize={this.props.pageSize}
-          totalItemsCount={this.props.totalItemsCount}
-          currentPage={this.props.currentPage}
-          toggleFollow={this.props.toggleFollow}
-          onChangeCurrentPage={this.onChangeCurrentPage}
-          onSearch={this.onSearch}
-          followingInProgress={this.props.followingInProgress}
-        />
-      </>
-    );
-  }
-}
+  useEffect(() => {
+    const parsed = queryString.parse(history.location.search.substr(1)) as QueryParamsType;
+    let actualFilter = filter;
+    let actualPage = currentPage;
 
-let mapStateToProps = (state: AppStateType): MapStatePropsType => {
-  return {
-    users: getUsers(state),
-    pageSize: getPageSize(state),
-    totalItemsCount: getTotalUsersCount(state),
-    currentPage: getCurrentPage(state),
-    isFetching: getIsFetching(state),
-    followingInProgress: getFollowingInProgress(state),
-    filter: getFilter(state),
-  };
+    if (!!parsed.page) actualPage = Number(parsed.page);
+    if (!!parsed.term) actualFilter = { ...actualFilter, term: parsed.term as string };
+
+    switch (parsed.friend) {
+      case 'null':
+        actualFilter = { ...actualFilter, friend: null };
+        break;
+      case 'true':
+        actualFilter = { ...actualFilter, friend: true };
+        break;
+      case 'false':
+        actualFilter = { ...actualFilter, friend: false };
+        break;
+
+      default:
+        break;
+    }
+
+    dispatch(requestUsers(actualPage, pageSize, actualFilter));
+  }, []);
+
+  useEffect(() => {
+    const query: QueryParamsType = {};
+    if (!!filter.term) query.term = filter.term;
+    if (filter.friend !== null) query.friend = String(filter.friend);
+    if (currentPage !== 1) query.page = String(currentPage);
+
+    history.push({
+      pathname: '/users',
+      search: queryString.stringify(query),
+    });
+  }, [filter, currentPage]);
+
+  console.log(isFetching);
+  return (
+    <>
+      {isFetching ? <Preloader /> : null}
+      <Users />
+    </>
+  );
 };
 
-const UsersContainer = connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(
-  mapStateToProps,
-  {
-    toggleFollow,
-    setCurrentPage,
-    requestUsers,
-  }
-)(UsersAPIContainer);
-
-export default UsersContainer;
+export default UserPage;

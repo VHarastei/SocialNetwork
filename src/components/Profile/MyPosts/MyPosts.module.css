@@ -4,6 +4,6 @@
 .postsBlock {
   padding: 10px;
 }
-.fieldControl.error span {
+.error {
   color: brown;
 }

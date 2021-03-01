@@ -19,8 +19,8 @@ let initialState = {
   followingInProgress: [] as Array<number>,
   filter: {
     term: '',
-    friend: null as null | boolean
-  }
+    friend: null as null | boolean,
+  },
 };
 type ActionsTypes = InferActionsTypes<typeof actions>;
 export type InitialStateType = typeof initialState;
@@ -65,11 +65,11 @@ let usersReducer = (state = initialState, action: ActionsTypes): InitialStateTyp
           ? [...state.followingInProgress, action.userId]
           : state.followingInProgress.filter((id) => id !== action.userId),
       };
-      case SET_FILTER:
-        return {
-          ...state,
-          filter: action.filter,
-        };
+    case SET_FILTER:
+      return {
+        ...state,
+        filter: action.filter,
+      };
     default:
       return state;
   }
@@ -106,12 +106,14 @@ export const actions = {
     } as const),
 };
 
-export const requestUsers = (currentPage: number, pageSize: number, term: string, friend: null | boolean): ThunkType => async (
-  dispatch
-) => {
+export const requestUsers = (
+  currentPage: number,
+  pageSize: number,
+  filter: FilterType
+): ThunkType => async (dispatch) => {
   dispatch(actions.toggleIsFetching(true));
-  dispatch(actions.setFilter({term, friend}))
-  const data = await usersAPI.getUsers(currentPage, pageSize, term, friend);
+  dispatch(actions.setFilter(filter));
+  const data = await usersAPI.getUsers(currentPage, pageSize, filter.term, filter.friend);
   dispatch(actions.toggleIsFetching(false));
   dispatch(actions.setUsers(data.items));
   dispatch(actions.setTotalUsersCount(data.totalCount));
@@ -119,7 +121,7 @@ export const requestUsers = (currentPage: number, pageSize: number, term: string
 
 export const toggleFollow = (userId: number, followed: boolean): ThunkType => async (dispatch) => {
   dispatch(actions.toggleFollowingProgress(true, userId));
-  let data = followed ? await usersAPI.unfollow(userId) : await usersAPI.follow(userId)
+  let data = followed ? await usersAPI.unfollow(userId) : await usersAPI.follow(userId);
   if (data.resultCode === 0) {
     dispatch(actions.toggleFollowSucceded(userId));
   }

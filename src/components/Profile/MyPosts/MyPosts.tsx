@@ -1,16 +1,14 @@
+import { Field, Form, Formik } from 'formik';
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../../../redux/profileReducer';
+import { AppStateType } from '../../../redux/reduxStore';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import { Form, Field } from 'react-final-form';
-import { maxLength } from '../../../utils/validators/validators';
-import { PostsType } from '../../../types/types';
 
-type PropsType = {
-  posts: Array<PostsType>;
-  addPost: (newPostText: string) => void;
-};
+const MyPosts: FC = () => {
+  const posts = useSelector((state: AppStateType) => state.profilePage.posts);
 
-const MyPosts: FC<PropsType> = ({ posts, addPost }) => {
   let postElements = posts.map((p) => (
     <Post key={p.id} message={p.message} likesCount={p.likesCount} />
   ));
@@ -18,41 +16,42 @@ const MyPosts: FC<PropsType> = ({ posts, addPost }) => {
     <div className={s.postsBlock}>
       <h2>my posts</h2>
       <div>
-        <AddNewPostForm addPost={addPost} />
+        <AddNewPostForm />
       </div>
       <div className={s.posts}>{postElements}</div>
     </div>
   );
 };
 
-type AddNewPostFormPropsType = {
-  addPost: (newPostText: string) => void;
-};
+let AddNewPostForm: FC = () => {
+  const dispatch = useDispatch();
+  const addPost = (newPostText: string) => {
+    dispatch(actions.addPost(newPostText));
+  };
+  const maxLength = (value: string) => {
+    let error;
+    if (value.length >= 300) {
+      error = `Maximum length is 300 symbols`;
+    }
+    return error;
+  };
 
-let AddNewPostForm: FC<AddNewPostFormPropsType> = ({ addPost }) => {
   return (
-    <Form
-      onSubmit={(FormData: {newPostText: string}) => {
-        addPost(FormData.newPostText);
-        FormData.newPostText = '';
+    <Formik
+      initialValues={{newPostText: ''}}
+      onSubmit={({ newPostText }, { resetForm }) => {
+        addPost(newPostText);
+        resetForm({});
       }}
     >
-      {({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <Field name="newPostText" validate={maxLength(300)}>
-            {({ input, meta }) => (
-              <div className={s.fieldControl + ' ' + s.error}>
-                <textarea type="text" placeholder="Write new post" {...input} />
-                {meta.error && meta.touched && <span>{meta.error}</span>}
-              </div>
-            )}
-          </Field>
-          <div>
-            <button type="submit">Post</button>
-          </div>
-        </form>
+      {({ errors, touched }) => (
+        <Form>
+          <Field name="newPostText" as="textarea" validate={maxLength} />
+          {errors.newPostText && touched.newPostText && <div className={s.error}>{errors.newPostText}</div>}
+          <button type="submit">Add post</button>
+        </Form>
       )}
-    </Form>
+    </Formik>
   );
 };
 
