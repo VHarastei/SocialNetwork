@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Preloader from './components/common/Preloader/Preloader';
 import { AppStateType } from './redux/reduxStore';
+import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const UserPage = React.lazy(() => import('./components/Users/UsersContainer'))
@@ -39,7 +40,9 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
               <Route path="/dialogs" render={() => <DialogsContainer />} />
-              <Route path="/users" render={() => <UserPage />} />
+              <Route exact path="/users" render={() => <UserPage />} />
+              <Route path="/users/:userId" render={() => <PeopleProfile />} />
+
               <Route path="/login" render={() => <Login />} />
               <Route path="*" render={() => <div>404 NOT FOUND </div>} />
               {/* <Redirect exact from="/" to="/profile" /> */}

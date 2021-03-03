@@ -90,12 +90,6 @@ export const actions = {
     } as const),
 };
 
-export const biba = () => async () => {
-  const data = await profileAPI.getProfile(2);
-  //dispatch(actions.setUserProfile(data));
-  console.log(data);
-}
-
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
   dispatch(actions.setUserProfile(data));

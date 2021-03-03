@@ -1,7 +1,8 @@
-import { Field, Form, Formik } from 'formik';
+import * as queryString from 'querystring';
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions, requestUsers } from '../../redux/usersReducer';
+import { useHistory } from 'react-router-dom';
+import { actions, requestUsers, toggleFollow } from '../../redux/usersReducer';
 import {
   getCurrentPage,
   getFilter,
@@ -11,13 +12,10 @@ import {
   getUsers,
 } from '../../redux/usersSelectors';
 import { FilterType } from '../../types/types';
-import Paginator from '../common/Paginator/Paginator';
-import User from './User';
-import styles from './Users.module.css';
-import * as queryString from 'querystring';
-import { useHistory } from 'react-router-dom';
 import PaginatorMUI from '../common/Paginator/PaginatorMUI';
-import { MenuItem, Select, TextField } from '@material-ui/core';
+import { SearchForm } from './SearchForm';
+import User from './User';
+
 
 const Users: FC = () => {
   const users = useSelector(getUsers);
@@ -73,7 +71,7 @@ const Users: FC = () => {
 
   const dispatch = useDispatch();
 
-  const toggleFollow = (userId: number, followed: boolean) => {
+  const toggleFollowUser = (userId: number, followed: boolean) => {
     dispatch(toggleFollow(userId, followed));
   };
 
@@ -99,7 +97,7 @@ const Users: FC = () => {
         <User
           key={u.id}
           followingInProgress={followingInProgress}
-          toggleFollow={toggleFollow}
+          toggleFollowUser={toggleFollowUser}
           user={u}
         />
       ))}
@@ -108,53 +106,3 @@ const Users: FC = () => {
 };
 
 export default Users;
-
-type SearchFormType = {
-  onSearch: (filter: FilterType) => void;
-};
-
-type FriendFormType = 'null' | 'true' | 'false';
-type ValuesFormType = {
-  term: string;
-  friend: FriendFormType;
-};
-
-const SearchForm: FC<SearchFormType> = ({ onSearch }) => {
-  const filter = useSelector(getFilter);
-
-  return (
-    <Formik
-      enableReinitialize
-      initialValues={{ term: filter.term, friend: String(filter.friend) as FriendFormType }}
-      onSubmit={(
-        values: ValuesFormType,
-        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => {
-        const filter: FilterType = {
-          term: values.term,
-          friend: values.friend === 'null' ? null : values.friend === 'true' ? true : false,
-        };
-        onSearch(filter);
-        setSubmitting(false);
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <Field type="text" name="term" />
-          <Field name="friend" as="select">
-            <option value="null" label="All" />
-            <option value="true" label="Only followed" />
-            <option value="false" label="Only unfollowed" />
-          </Field>
-          {/* <Select value={'Filter by'}>
-            <MenuItem value="10">Ten</MenuItem>
-            <MenuItem value="20">Twenty</MenuItem>
-          </Select> */}
-          <button type="submit" disabled={isSubmitting}>
-            Search
-          </button>
-        </Form>
-      )}
-    </Formik>
-  );
-};

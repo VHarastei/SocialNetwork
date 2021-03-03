@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import Preloader from '../../common/Preloader/Preloader';
 import s from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus';
-import userPhoto from '../../../assets/images/person.png';
+import defaultPhoto from '../../../assets/images/person.png';
 import ProfileDataForm from './ProfileDataForm';
 import { FORM_ERROR } from 'final-form';
 import Contacts from './ProfileContacts';
@@ -32,6 +32,9 @@ const ProfileInfo: FC<PropsType> = ({
     return <Preloader />;
   }
 
+  
+
+
   const onSavePhoto = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       savePhoto(e.target.files[0]);
@@ -43,14 +46,11 @@ const ProfileInfo: FC<PropsType> = ({
     if (result.resultCode === 0) setEditMode(false);
     return { [FORM_ERROR]: result.messages[0] };
   };
+  // TODO: add status to profile data
   return (
     <div>
       <div className={s.descriptionBlock}>
-        <img
-          className={s.icon}
-          src={profile.photos.large || userPhoto}
-          alt="icon"
-        />
+        <ProfilePhoto photo={profile.photos.large}/>
         {isOwner && <input type={'file'} onChange={onSavePhoto} />}
         {editMode ? (
           <ProfileDataForm profile={profile} onSubmit={onSubmit} />
@@ -63,7 +63,7 @@ const ProfileInfo: FC<PropsType> = ({
             }}
           />
         )}
-        <ProfileStatus {...{ isOwner, updateStatus, status, statusError }} />
+        <ProfileStatus {...{ isOwner, updateStatus, status, statusError }} /> 
       </div>
     </div>
   );
@@ -71,11 +71,11 @@ const ProfileInfo: FC<PropsType> = ({
 
 type ProfileDataPropsType = {
   profile: ProfileType
-  isOwner: boolean
-  toggleEditMode: () => void
+  isOwner?: boolean
+  toggleEditMode?: () => void
 }
 
-const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggleEditMode }) => {
+export const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggleEditMode }) => {
   return (
     <div>
       {isOwner && <button onClick={toggleEditMode}>edit</button>}
@@ -87,6 +87,22 @@ const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggleEditMod
       <div>About me: {profile.aboutMe}</div>
       <Contacts contacts={profile.contacts} />
       
+    </div>
+  );
+};
+
+
+type ProfilePhotoPropsType = {
+  photo: string | null
+}
+export const ProfilePhoto: FC<ProfilePhotoPropsType> = ({ photo }) => {
+  return (
+    <div>
+      <img
+          className={s.icon}
+          src={photo || defaultPhoto}
+          alt="icon"
+        />
     </div>
   );
 };

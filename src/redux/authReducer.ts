@@ -9,6 +9,7 @@ const SET_CAPTCHA_URL = 'SocialNetwork/auth/SET_CAPTCHA_URL';
 
 let initialState = {
   userId: null as number | null,
+  userPhoto: null as string | null,
   login: null as string | null,
   email: null as string | null,
   isAuth: false,
@@ -44,6 +45,10 @@ export const actions = {
       payload: { userId, email, login, isAuth },
     } as const),
   setCaptchaUrl: (captchaUrl: string | null) => ({
+    type: SET_CAPTCHA_URL,
+    payload: { captchaUrl },
+  }),
+  setUserPhoto: (captchaUrl: string | null) => ({
     type: SET_CAPTCHA_URL,
     payload: { captchaUrl },
   }),

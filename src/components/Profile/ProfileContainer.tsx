@@ -1,11 +1,11 @@
 import React, { ComponentType, FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getUserProfile, getStatus, updateStatus, savePhoto } from '../../redux/profileReducer';
-import Profile from './Profile';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
+import { getStatus, getUserProfile, savePhoto, updateStatus } from '../../redux/profileReducer';
 import { AppStateType } from '../../redux/reduxStore';
 import { ProfileType } from '../../types/types';
+import Profile from './Profile';
 
 // type MapStatePropsType = {
 //   profile: ProfileType
@@ -23,7 +23,6 @@ type MapDispatchPropsType = {
   updateStatus: (status: string) => void;
   savePhoto: (file: File) => void;
   saveProfile: (profile: ProfileType) => Promise<any>;
-  biba: () => any;
 };
 
 type PathParamsType = {
