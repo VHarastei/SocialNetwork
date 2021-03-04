@@ -1,3 +1,4 @@
+import { makeStyles } from '@material-ui/core';
 import * as queryString from 'querystring';
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +16,7 @@ import { FilterType } from '../../types/types';
 import PaginatorMUI from '../common/Paginator/PaginatorMUI';
 import { SearchForm } from './SearchForm';
 import User from './User';
+
 
 
 const Users: FC = () => {

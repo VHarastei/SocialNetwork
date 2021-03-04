@@ -6,6 +6,9 @@ const useStyles = makeStyles({
   ul: {
     margin: 'auto',
     width: '50%',
+    '& button.Mui-selected': {
+      '&:hover': { background: '#ff3300' },
+    }
   },
 });
 

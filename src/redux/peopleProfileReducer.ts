@@ -12,7 +12,7 @@ const initialState = {
 
 type ActionsTypes = InferActionsTypes<typeof actions>;
 type InitialStateType = typeof initialState;
-type ThunkType = BaseThunkType<ActionsTypes>;
+type ThunkType = BaseThunkType<ActionsTypes, void>;
 
 export let peopleProfileReducer = (
   state = initialState,
@@ -49,12 +49,22 @@ export const actions = {
     } as const),
 };
 
-export const getPeopleProfile = (userId: number): ThunkType => async (dispatch) => {
-  const data = await profileAPI.getProfile(userId);
-  dispatch(actions.setPeopleProfile(data));
+export const getPeopleProfile = (userId: number): ThunkType => (dispatch) => {
+  const profile = profileAPI.getProfile(userId);
+  const status = profileAPI.getStatus(userId);
+  Promise.all([profile, status]).then(([profile, status]) => {
+    dispatch(actions.setPeopleProfile(profile));
+    dispatch(actions.setStatus(status));
+  });
 };
+// export const getPeopleProfile = (userId: number): ThunkType => async (dispatch) => {
+//   const profile = await profileAPI.getProfile(userId);
+//   dispatch(actions.setPeopleProfile(profile));
+//   const status = await profileAPI.getStatus(userId);
+//   dispatch(actions.setStatus(status));
+// };
 
-export const getPeopleStatus = (userId: number): ThunkType => async (dispatch) => {
-  const data = await profileAPI.getStatus(userId);
-  dispatch(actions.setStatus(data));
+export const deletePeopleProfile = (): ThunkType => (dispatch) => {
+  dispatch(actions.setPeopleProfile(null));
+  dispatch(actions.setStatus(''));
 };

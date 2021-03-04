@@ -9,6 +9,7 @@ import { compose } from 'redux';
 import Preloader from './components/common/Preloader/Preloader';
 import { AppStateType } from './redux/reduxStore';
 import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
+import {HeaderNav} from './components/NavBar/NavBarNew';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const UserPage = React.lazy(() => import('./components/Users/UsersContainer'))
@@ -30,8 +31,9 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
     }
     return (
       <div className="app-wrapper">
-        <HeaderContainer />
-        <NavBar />
+        <HeaderNav />
+        {/* <HeaderContainer /> */}
+        {/* <NavBar /> */}
         <Suspense fallback={<Preloader />}>
           <div className="app-wrapper-content">
             <Switch>

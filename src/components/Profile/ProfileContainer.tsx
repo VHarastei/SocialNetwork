@@ -2,7 +2,7 @@ import React, { ComponentType, FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { getStatus, getUserProfile, savePhoto, updateStatus } from '../../redux/profileReducer';
+import { getStatus, getUserProfile, savePhoto, updateStatus, saveProfile } from '../../redux/profileReducer';
 import { AppStateType } from '../../redux/reduxStore';
 import { ProfileType } from '../../types/types';
 import Profile from './Profile';
@@ -58,6 +58,6 @@ let mapStateToProps = (state: AppStateType) => {
 };
 
 export default compose<ComponentType>(
-  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto }),
+  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
   withRouter
 )(ProfileContainer);
