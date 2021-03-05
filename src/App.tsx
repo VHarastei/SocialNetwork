@@ -10,6 +10,7 @@ import Preloader from './components/common/Preloader/Preloader';
 import { AppStateType } from './redux/reduxStore';
 import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
 import {HeaderNav} from './components/NavBar/NavBarNew';
+import SignIn from './components/Login/LoginNew';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const UserPage = React.lazy(() => import('./components/Users/UsersContainer'))
@@ -29,9 +30,13 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
     if (!this.props.initialized) {
       return <Preloader />;
     }
+    if(!this.props.isAuth) {
+      return <SignIn />
+    }
     return (
       <div className="app-wrapper">
         <HeaderNav />
+
         {/* <HeaderContainer /> */}
         {/* <NavBar /> */}
         <Suspense fallback={<Preloader />}>
@@ -58,6 +63,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
 
 const mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized,
+  isAuth: state.auth.isAuth
 });
 
 export default compose(connect(mapStateToProps, { initializeApp })(App));

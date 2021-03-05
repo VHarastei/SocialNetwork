@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -55,9 +56,9 @@ export const HeaderNav = () => {
   return (
     <Paper color="secondary">
       <Container className={classes.root}>
-        <Typography className={classes.logo} variant="h4" color="secondary">
-          NETWORK
-        </Typography>
+        
+          <SupervisedUserCircleIcon color="secondary" className={classes.logo} style={{ fontSize: 48 }}></SupervisedUserCircleIcon>
+        
         <Tabs
           className={classes.tabs}
           value={value}
