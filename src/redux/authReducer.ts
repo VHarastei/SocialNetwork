@@ -3,6 +3,7 @@ import { ResultCodesEnum } from '../api/api';
 import { securityAPI } from '../api/securityAPI';
 import { authAPI } from '../api/authAPI';
 import { InferActionsTypes, BaseThunkType } from './reduxStore';
+import { getUserProfile } from './profileReducer';
 
 const SET_USER_DATA = 'SocialNetwork/auth/SET_USER_DATA';
 const SET_CAPTCHA_URL = 'SocialNetwork/auth/SET_CAPTCHA_URL';
@@ -63,6 +64,7 @@ export const getAuthUserData = (): BaseThunkType<ActionsTypes, Promise<any>> => 
   if (data.resultCode === ResultCodesEnum.Succes) {
     let { id, email, login } = data.data;
     dispatch(actions.setAuthUserData(id, email, login, true));
+    dispatch(getUserProfile(id))
   }
   return data;
 };

@@ -9,17 +9,18 @@ import { compose } from 'redux';
 import Preloader from './components/common/Preloader/Preloader';
 import { AppStateType } from './redux/reduxStore';
 import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
-import {HeaderNav} from './components/NavBar/NavBarNew';
+import { HeaderNav } from './components/NavBar/NavBarNew';
 import SignIn from './components/Login/LoginNew';
+import { makeStyles } from '@material-ui/core';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
-const UserPage = React.lazy(() => import('./components/Users/UsersContainer'))
+const UserPage = React.lazy(() => import('./components/Users/UsersContainer'));
 const Login = React.lazy(() => import('./components/Login/Login'));
 
 type MapPropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
-  initializeApp: () => void
-}
+  initializeApp: () => void;
+};
 
 class App extends React.Component<MapPropsType & DispatchPropsType> {
   componentDidMount() {
@@ -30,8 +31,8 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
     if (!this.props.initialized) {
       return <Preloader />;
     }
-    if(!this.props.isAuth) {
-      return <SignIn />
+    if (!this.props.isAuth) {
+      return <SignIn />;
     }
     return (
       <div className="app-wrapper">
@@ -48,7 +49,8 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
               <Route path="/dialogs" render={() => <DialogsContainer />} />
               <Route exact path="/users" render={() => <UserPage />} />
-              <Route path="/users/:userId" render={() => <PeopleProfile />} />
+              <Route exact path="/people" render={() => <UserPage />} />
+              <Route path="/people/:userId" render={() => <PeopleProfile />} />
 
               <Route path="/login" render={() => <Login />} />
               <Route path="*" render={() => <div>404 NOT FOUND </div>} />
@@ -63,7 +65,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
 
 const mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized,
-  isAuth: state.auth.isAuth
+  isAuth: state.auth.isAuth,
 });
 
 export default compose(connect(mapStateToProps, { initializeApp })(App));

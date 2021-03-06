@@ -10,13 +10,21 @@ import { theme } from '../../index';
 const useStyles = makeStyles((tm: typeof theme) => ({
   button: {
     '&:hover': { background: '#ff3300' },
-    margin: '0 10px',
+    //marginRight: 36,
     height: '36px',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   box: {
     display: 'flex',
     margin: '10px',
+    justifyContent: 'space-between',
+  },
+  select: {
+    marginTop: '16px',
+    minWidth: '100px',
+  },
+  input: {
+    maxWidth: '150px',
   },
 }));
 
@@ -51,12 +59,21 @@ export const SearchForm: FC<SearchFormType> = ({ onSearch }) => {
       {({ isSubmitting }) => (
         <Form>
           <Box className={classes.box}>
-            <Field as={TextField} type="text" name="term" label="Enter name" color="secondary"/>
-            <Field name="friend" as={Select} color="secondary">
-              <MenuItem value="null">All</MenuItem>
-              <MenuItem value="true">Only followed</MenuItem>
-              <MenuItem value="false">Only unfollowed</MenuItem>
-            </Field>
+            <Box>
+              <Field
+                className={classes.input}
+                as={TextField}
+                type="text"
+                name="term"
+                label="Enter name"
+                color="secondary"
+              />
+              <Field className={classes.select} name="friend" as={Select} color="secondary">
+                <MenuItem value="null">All</MenuItem>
+                <MenuItem value="true">Only followed</MenuItem>
+                <MenuItem value="false">Only unfollowed</MenuItem>
+              </Field>
+            </Box>
             <Button
               color="secondary"
               className={classes.button}

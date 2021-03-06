@@ -4,11 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   ul: {
-    margin: 'auto',
-    width: '50%',
     '& button.Mui-selected': {
       '&:hover': { background: '#ff3300' },
-    }
+    },
   },
 });
 
@@ -27,13 +25,22 @@ const PaginatorMUI: React.FC<PropsType> = ({
 }) => {
   let pagesCount = Math.ceil(totalItemsCount / pageSize);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    if(value !== currentPage) {
-    onChangeCurrentPage(value);
+    if (value !== currentPage) {
+      onChangeCurrentPage(value);
     }
   };
   const classes = useStyles();
 
-  return <Pagination classes={{root: classes.ul}} shape="rounded"   color="secondary" count={pagesCount} page={currentPage} onChange={handleChange} />;
+  return (
+    <Pagination
+      classes={{ root: classes.ul }}
+      shape="rounded"
+      color="secondary"
+      count={pagesCount}
+      page={currentPage}
+      onChange={handleChange}
+    />
+  );
 };
 
 export default PaginatorMUI;

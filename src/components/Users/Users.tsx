@@ -1,8 +1,9 @@
-import { makeStyles } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import * as queryString from 'querystring';
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { theme } from '../..';
 import { actions, requestUsers, toggleFollow } from '../../redux/usersReducer';
 import {
   getCurrentPage,
@@ -15,11 +16,19 @@ import {
 import { FilterType } from '../../types/types';
 import PaginatorMUI from '../common/Paginator/PaginatorMUI';
 import { SearchForm } from './SearchForm';
-import User from './User';
+import User, { UserCard } from './User';
 
-
+const useStyles = makeStyles((tm: typeof theme) => ({
+  userBox: {
+    //display: 'flex',
+    //flexDirection: 'column',
+    //alignItems: 'center',
+  },
+}));
 
 const Users: FC = () => {
+  const classes = useStyles();
+
   const users = useSelector(getUsers);
   const pageSize = useSelector(getPageSize);
   const totalUsersCount = useSelector(getTotalUsersCount);
@@ -66,7 +75,7 @@ const Users: FC = () => {
     if (filter.friend !== null) query.friend = String(filter.friend);
     if (currentPage !== 1) query.page = String(currentPage);
     history.push({
-      pathname: '/users',
+      pathname: '/people',
       search: queryString.stringify(query),
     });
   }, [filter, currentPage, history]);
@@ -87,7 +96,7 @@ const Users: FC = () => {
   };
 
   return (
-    <div>
+    <Container component="main" maxWidth="sm">
       <PaginatorMUI
         totalItemsCount={totalUsersCount}
         pageSize={pageSize}
@@ -95,15 +104,17 @@ const Users: FC = () => {
         currentPage={currentPage}
       />
       <SearchForm onSearch={onSearch} />
-      {users.map((u) => (
-        <User
-          key={u.id}
-          followingInProgress={followingInProgress}
-          toggleFollowUser={toggleFollowUser}
-          user={u}
-        />
-      ))}
-    </div>
+      <Box className={classes.userBox}>
+        {users.map((u) => (
+          <UserCard
+            key={u.id}
+            followingInProgress={followingInProgress}
+            toggleFollowUser={toggleFollowUser}
+            user={u}
+          />
+        ))}
+      </Box>
+    </Container>
   );
 };
 

@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardMedia,
   Checkbox,
   Container,
   CssBaseline,
@@ -15,9 +16,11 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Field, Form, Formik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { login } from '../../redux/authReducer';
+import { AppStateType } from '../../redux/reduxStore';
 
 function Copyright() {
   return (
@@ -34,6 +37,12 @@ function Copyright() {
 const loginSchema = Yup.object().shape({
   password: Yup.string().min(6, 'Too Short!').max(50, 'Too Long!').required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
+  signInError: Yup.boolean(),
+  captcha: Yup.string().when('signInError', {
+    is: (captcha: any) => captcha,
+    then: Yup.string().required('Required'),
+    otherwise: Yup.string(),
+  }),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -79,21 +88,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl);
+
   const dispatch = useDispatch();
 
   return (
     <Formik
       validationSchema={loginSchema}
-      initialValues={{ email: '', password: '', rememberMe: false }}
-      onSubmit={async (formData, { setStatus, resetForm }) => {
-        let signIn = await dispatch(
-          login(formData.email, formData.password, formData.rememberMe, null)
+      initialValues={{ email: '', password: '', rememberMe: false, captcha: '' }}
+      onSubmit={async (formData, { setStatus }) => {
+        console.log(formData);
+        let signInError = await dispatch(
+          login(formData.email, formData.password, formData.rememberMe, formData.captcha)
         );
-        setStatus({ signIn });
-        //resetForm({});
+        if (!!signInError) setStatus({ signInError });
       }}
     >
-      {({ errors, touched, status = { signIn: null } }) => (
+      {({ errors, touched, status = { signInError: null } }) => (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
@@ -117,7 +128,7 @@ export default function SignIn() {
                 autoComplete="email"
                 autoFocus
                 error={Boolean(errors.email)}
-                helperText={errors.email}
+                helperText={touched.email ? errors.email : ''}
               />
               <Field
                 color="primary"
@@ -132,7 +143,7 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
                 error={Boolean(errors.password)}
-                helperText={errors.password}
+                helperText={touched.password ? errors.password : ''}
               />
               <Field
                 as={FormControlLabel}
@@ -140,15 +151,8 @@ export default function SignIn() {
                 control={<Checkbox color="primary" />}
                 label="Remember me"
               />
-              {status.signIn && (
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography align="center" component="h1" variant="h6">
-                      {status.signIn}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
+              <SignInErrorBox captchaUrl={captchaUrl} signInError={status.signInError} />
+
               <Button
                 type="submit"
                 color="secondary"
@@ -168,3 +172,53 @@ export default function SignIn() {
     </Formik>
   );
 }
+
+type SignInErrorPropsType = {
+  captchaUrl: any;
+  signInError: any;
+};
+
+const SignInErrorBox: FC<SignInErrorPropsType> = ({ captchaUrl, signInError }) => {
+  const classes = useStyles();
+
+  return captchaUrl ? (
+    <Box>
+      <Card>
+        <CardMedia
+          style={{
+            height: 0,
+            paddingTop: '30%',
+            marginRight: '20%',
+            marginLeft: '10%',
+          }}
+          image={captchaUrl}
+          title="Captcha"
+        />
+      </Card>
+      <Field
+        color="primary"
+        as={TextField}
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        id="captcha"
+        label="Captcha"
+        name="captcha"
+        type="text"
+        error={signInError}
+        helperText={'Required'}
+      />
+    </Box>
+  ) : (
+    signInError && (
+      <Card className={classes.card}>
+        <CardContent className={classes.cardContent}>
+          <Typography align="center" component="h1" variant="h6">
+            {signInError}
+          </Typography>
+        </CardContent>
+      </Card>
+    )
+  );
+};

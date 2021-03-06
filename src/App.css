@@ -2,3 +2,7 @@
   font-family: "sf-regular";
   src: url(./assets/fonts/SF-Pro-Display-Regular.otf);
 }
+
+body {
+  background-color: #f0f2f5;
+}
