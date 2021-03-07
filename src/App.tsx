@@ -12,6 +12,7 @@ import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
 import { HeaderNav } from './components/NavBar/NavBarNew';
 import SignIn from './components/Login/LoginNew';
 import { makeStyles } from '@material-ui/core';
+import Friends from './components/Friends/Friends';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const UserPage = React.lazy(() => import('./components/Users/UsersContainer'));
@@ -21,7 +22,6 @@ type MapPropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
   initializeApp: () => void;
 };
-
 class App extends React.Component<MapPropsType & DispatchPropsType> {
   componentDidMount() {
     this.props.initializeApp();
@@ -48,7 +48,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
               <Route path="/dialogs" render={() => <DialogsContainer />} />
-              <Route exact path="/users" render={() => <UserPage />} />
+              <Route exact path="/friends" render={() => <Friends />} />
               <Route exact path="/people" render={() => <UserPage />} />
               <Route path="/people/:userId" render={() => <PeopleProfile />} />
 

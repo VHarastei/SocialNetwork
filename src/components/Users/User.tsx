@@ -68,14 +68,15 @@ const useStyles1 = makeStyles({
   button: {
     '&:hover': { background: '#ff3300' },
     width: '100px',
-    marginTop: '18%',
+    marginTop: '25%',
     marginRight: '10px',
   },
   avatar: {
-    width: 56,
-    height: 56,
+    width: 80,
+    height: 80,
     color: '#fff',
     backgroundColor: '#f3673b',
+    fontSize: 36
   },
   link: {
     textDecoration: 'none',
@@ -118,6 +119,7 @@ export const UserCard: FC<UserCardPropsType> = ({
             {user.followed ? 'Unfollow' : 'Follow'}
           </Button>
         }
+        titleTypographyProps={{variant:'h6' }}
         title={user.name}
         subheader={user.status}
       />

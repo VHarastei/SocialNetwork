@@ -79,7 +79,7 @@ export const HeaderNav = () => {
         >
           <Tab label="Home" to="/profile" component={Link} />
           <Tab label="Messages" to="/dialogs" component={Link} />
-          <Tab label="Friends" to="/users" component={Link} />
+          <Tab label="Friends" to="/friends" component={Link} />
           <Tab label="Find people" to="/people" component={Link} />
         </Tabs>
         <Box className={classes.login}>

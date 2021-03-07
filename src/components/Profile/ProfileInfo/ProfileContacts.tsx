@@ -28,10 +28,12 @@ type ContactPropsType = {
   contactValue: string;
 };
 
-const Contact: FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
+export const Contact: FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
+  let newContactTitle = contactTitle[0].toLocaleUpperCase() + contactTitle.slice(1);
+
   return (
     <div className={s.contactItem}>
-      {contactTitle} : {contactValue}
+      {newContactTitle}: {contactValue}
     </div>
   );
 };

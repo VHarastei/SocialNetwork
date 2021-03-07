@@ -10,7 +10,7 @@ import { theme } from '../../index';
 const useStyles = makeStyles((tm: typeof theme) => ({
   button: {
     '&:hover': { background: '#ff3300' },
-    //marginRight: 36,
+    marginRight: `10px`,
     height: '36px',
     alignSelf: 'center',
   },

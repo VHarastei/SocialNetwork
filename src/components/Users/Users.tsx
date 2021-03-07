@@ -19,10 +19,11 @@ import { SearchForm } from './SearchForm';
 import User, { UserCard } from './User';
 
 const useStyles = makeStyles((tm: typeof theme) => ({
-  userBox: {
-    //display: 'flex',
-    //flexDirection: 'column',
-    //alignItems: 'center',
+  box: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 16
   },
 }));
 
@@ -97,14 +98,16 @@ const Users: FC = () => {
 
   return (
     <Container component="main" maxWidth="sm">
-      <PaginatorMUI
+      <Box className={classes.box}>
+      <PaginatorMUI 
         totalItemsCount={totalUsersCount}
         pageSize={pageSize}
         onChangeCurrentPage={onChangeCurrentPage}
         currentPage={currentPage}
       />
+      </Box>
       <SearchForm onSearch={onSearch} />
-      <Box className={classes.userBox}>
+      
         {users.map((u) => (
           <UserCard
             key={u.id}
@@ -113,7 +116,7 @@ const Users: FC = () => {
             user={u}
           />
         ))}
-      </Box>
+      
     </Container>
   );
 };
