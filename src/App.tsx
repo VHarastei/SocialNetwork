@@ -1,22 +1,19 @@
-import './App.css';
 import React, { Suspense } from 'react';
-import NavBar from './components/NavBar/NavBar';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import HeaderContainer from './components/Header/HeaderContainer';
-import { initializeApp } from './redux/appReducer';
 import { connect } from 'react-redux';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { compose } from 'redux';
+import './App.css';
 import Preloader from './components/common/Preloader/Preloader';
-import { AppStateType } from './redux/reduxStore';
-import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
-import { HeaderNav } from './components/NavBar/NavBarNew';
 import SignIn from './components/Login/LoginNew';
-import { makeStyles } from '@material-ui/core';
-import Friends from './components/Friends/Friends';
+import { HeaderNav } from './components/NavBar/NavBarNew';
+import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
+import { initializeApp } from './redux/appReducer';
+import { AppStateType } from './redux/reduxStore';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
-const UserPage = React.lazy(() => import('./components/Users/UsersContainer'));
+const FindPeople = React.lazy(() => import('./components/Users/Users'));
 const Login = React.lazy(() => import('./components/Login/Login'));
+const Friends = React.lazy(() => import('./components/Friends/Friends'));
 
 type MapPropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
@@ -37,9 +34,6 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
     return (
       <div className="app-wrapper">
         <HeaderNav />
-
-        {/* <HeaderContainer /> */}
-        {/* <NavBar /> */}
         <Suspense fallback={<Preloader />}>
           <div className="app-wrapper-content">
             <Switch>
@@ -48,10 +42,12 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
               </Route>
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
               <Route path="/dialogs" render={() => <DialogsContainer />} />
-              <Route exact path="/friends" render={() => <Friends />} />
-              <Route exact path="/people" render={() => <UserPage />} />
-              <Route path="/people/:userId" render={() => <PeopleProfile />} />
-
+              <Route path="/friends/:userId?" render={() => <Friends />} />
+              <Route exact path="/people" render={() => <FindPeople />} />
+              <Route
+                path="/people/:userId"
+                render={() => <PeopleProfile backBtnPath={'people'} />}
+              />
               <Route path="/login" render={() => <Login />} />
               <Route path="*" render={() => <div>404 NOT FOUND </div>} />
               {/* <Redirect exact from="/" to="/profile" /> */}

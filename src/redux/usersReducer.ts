@@ -82,7 +82,9 @@ export const actions = {
       userId,
     } as const),
   setUsers: (users: Array<UserType>) => ({ type: SET_USERS, users } as const),
-  setFilter: (filter: FilterType) => ({ type: SET_FILTER, filter } as const),
+  setFilter: (filter: FilterType) => {
+    console.log('set', filter)
+    return { type: SET_FILTER, filter } as const},
   setCurrentPage: (currentPage: number) =>
     ({
       type: SET_CURRENT_PAGE,

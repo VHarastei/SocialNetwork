@@ -30,13 +30,14 @@ const useStyles = makeStyles((tm: typeof theme) => ({
 
 type SearchFormType = {
   onSearch: (filter: FilterType) => void;
+  selector: boolean;
 };
 type FriendFormType = 'null' | 'true' | 'false';
 type ValuesFormType = {
   term: string;
   friend: FriendFormType;
 };
-export const SearchForm: FC<SearchFormType> = ({ onSearch }) => {
+export const SearchForm: FC<SearchFormType> = ({ onSearch, selector }) => {
   const classes = useStyles();
   const filter = useSelector(getFilter);
 
@@ -68,11 +69,13 @@ export const SearchForm: FC<SearchFormType> = ({ onSearch }) => {
                 label="Enter name"
                 color="secondary"
               />
-              <Field className={classes.select} name="friend" as={Select} color="secondary">
-                <MenuItem value="null">All</MenuItem>
-                <MenuItem value="true">Only followed</MenuItem>
-                <MenuItem value="false">Only unfollowed</MenuItem>
-              </Field>
+              {selector && (
+                <Field className={classes.select} name="friend" as={Select} color="secondary">
+                  <MenuItem value="null">All</MenuItem>
+                  <MenuItem value="true">Only followed</MenuItem>
+                  <MenuItem value="false">Only unfollowed</MenuItem>
+                </Field>
+              )}
             </Box>
             <Button
               color="secondary"

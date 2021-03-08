@@ -1,6 +1,5 @@
-import { Avatar, Container, IconButton, Paper } from '@material-ui/core';
+import { Avatar, IconButton, Paper } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import { deepOrange } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -9,7 +8,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logout } from '../../redux/authReducer';
 import { AppStateType } from '../../redux/reduxStore';
 
@@ -18,13 +17,9 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: `space-between`,
     alignItems: 'center',
-  },
-  tabs: {
-    // display: 'inline'
-    //width: '700px',
+    margin: '0 16px',
   },
   logo: {
-    //width: '100%',
     display: 'inline',
     userSelect: 'none',
   },
@@ -34,24 +29,41 @@ const useStyles = makeStyles({
     justifyContent: `space-between`,
   },
   userName: {
-    //width: '100%',
     display: 'inline',
     color: 'gray',
     margin: '0 16px 0 8px',
   },
   avatar: {
-    color: '#fff', backgroundColor: '#f3673b'
-  }
+    color: '#fff',
+    backgroundColor: '#f3673b',
+  },
 });
 
 export const HeaderNav = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+
+  let initialTabValue = 0;
+  let path = useHistory().location.pathname;
+
+  let pathSymbols = path.split('');
+  pathSymbols.forEach((item, index) => {
+    if (item === '/' && index !== 0) {
+      pathSymbols.splice(index);
+    }
+  });
+  path = pathSymbols.join('');
+
+  let arrPath = ['/profile', '/dialogs', '/friends', '/people'];
+  arrPath.forEach((item, index) => {
+    if (item === path) initialTabValue = index;
+  });
+
+  const [tabValue, setTabValue] = React.useState(initialTabValue);
   const login = useSelector((state: AppStateType) => state.auth.login) as string;
   const photo = useSelector((state: AppStateType) => state.profilePage.profile?.photos.small);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (event: React.ChangeEvent<{}>, newTabValue: number) => {
+    setTabValue(newTabValue);
   };
 
   const dispatch = useDispatch();
@@ -62,7 +74,7 @@ export const HeaderNav = () => {
 
   return (
     <Paper color="secondary">
-      <Container className={classes.root}>
+      <div className={classes.root}>
         <SupervisedUserCircleIcon
           color="secondary"
           className={classes.logo}
@@ -70,8 +82,7 @@ export const HeaderNav = () => {
         ></SupervisedUserCircleIcon>
 
         <Tabs
-          className={classes.tabs}
-          value={value}
+          value={tabValue}
           onChange={handleChange}
           indicatorColor="secondary"
           textColor="secondary"
@@ -83,11 +94,7 @@ export const HeaderNav = () => {
           <Tab label="Find people" to="/people" component={Link} />
         </Tabs>
         <Box className={classes.login}>
-          <Avatar
-            className={classes.avatar}
-            alt={login}
-            src={photo}
-          >
+          <Avatar className={classes.avatar} alt={login} src={photo}>
             {login[0]}
           </Avatar>
           <Typography className={classes.userName} variant="h5">
@@ -97,7 +104,7 @@ export const HeaderNav = () => {
             <ExitToAppIcon color="secondary" />
           </IconButton>
         </Box>
-      </Container>
+      </div>
     </Paper>
   );
 };
