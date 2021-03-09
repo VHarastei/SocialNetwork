@@ -31,8 +31,6 @@ const useStyles = makeStyles((tm: typeof theme) => ({
 
 const Users: FC = () => {
   const classes = useStyles();
-  let  userId  = useParams<{ userId: string }>();
-  console.log('params',userId)
   const users = useSelector(getUsers);
   const pageSize = useSelector(getPageSize);
   const totalUsersCount = useSelector(getTotalUsersCount);
@@ -52,7 +50,7 @@ const Users: FC = () => {
 
   useEffect(() => {
     const parsed = queryString.parse(history.location.search.substr(1)) as QueryParamsType;
-    console.log('history',parsed);
+    //console.log('history',parsed);
     let actualFilter = filter;
     let actualPage = currentPage;
     if (!!parsed.page) actualPage = Number(parsed.page);
@@ -94,11 +92,11 @@ const Users: FC = () => {
     dispatch(toggleFollow(userId, followed));
   };
   const onSearch = (filter: FilterType) => {
-    console.log('search')
+    //console.log('search')
     dispatch(requestUsers(1, pageSize, filter));
   };
   const onChangeCurrentPage = (pageNumber: number) => {
-    console.log('change')
+    //console.log('change')
     dispatch(actions.setCurrentPage(pageNumber));
     dispatch(requestUsers(pageNumber, pageSize, filter));
   };

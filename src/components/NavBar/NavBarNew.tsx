@@ -53,7 +53,7 @@ export const HeaderNav = () => {
   });
   path = pathSymbols.join('');
 
-  let arrPath = ['/profile', '/dialogs', '/friends', '/people'];
+  let arrPath = ['/profile', '/chat', '/friends', '/people'];
   arrPath.forEach((item, index) => {
     if (item === path) initialTabValue = index;
   });
@@ -89,7 +89,7 @@ export const HeaderNav = () => {
           centered
         >
           <Tab label="Home" to="/profile" component={Link} />
-          <Tab label="Messages" to="/dialogs" component={Link} />
+          <Tab label="Chat" to="/chat" component={Link} />
           <Tab label="Friends" to="/friends" component={Link} />
           <Tab label="Find people" to="/people" component={Link} />
         </Tabs>

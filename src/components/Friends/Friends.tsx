@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) =>
       overflow: 'hidden',
     },
     searchBar: {
-      maxWidth: 500,
+      width: 500,
       marginLeft: 12,
       maxHeight: '100%',
       overflow: 'auto',
@@ -57,18 +57,19 @@ const Friends = () => {
   const totalUsersCount = useSelector(getTotalUsersCount);
   const filter = useSelector(getFilter);
 
+  // 1 раз завжди з першим викликом
   const dispatch = useDispatch();
   useEffect(() => {
     let newFilter = { term: filter.term, friend: true };
-    console.log('mount1')
+    //console.log('mount1')
     dispatch(requestUsers(1, 99, newFilter));
-    console.log('mount2')
+    //console.log('mount2')
     return () => {
       //let newFilter = { term: '', friend: null };
-      console.log('unmount1')
-      //dispatch(actions.setFilter({ term: '', friend: null }))
-      dispatch(requestUsers(1, 1, { term: '', friend: null }));
-      console.log('unmount2')
+      //console.log('unmount1')
+      dispatch(actions.setFilter({ term: '', friend: null }))
+      //dispatch(requestUsers(1, 1, { term: '', friend: null }));
+      //console.log('unmount2')
     }
   }, []);
 
