@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) =>
       flexDirection: 'row',
       overflow: 'hidden',
     },
-    searchBar: {
+    searchBar: {     
+      height: '90vh',
       width: 500,
       marginLeft: 12,
-      maxHeight: '100%',
       overflow: 'auto',
     },
     friendProfile: {

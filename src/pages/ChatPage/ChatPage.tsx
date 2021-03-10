@@ -2,8 +2,6 @@ import { Button, TextField } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import React, { FC, useEffect, useState } from 'react';
 
-let wsChannel = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx');
-
 const ChatPage = () => {
   return <Chat />;
 };
@@ -11,10 +9,34 @@ const ChatPage = () => {
 export default ChatPage;
 
 const Chat = () => {
+  const [wsChannel, SetWsChannel] = useState<WebSocket | null>(null);
+
+  useEffect(() => {
+    let ws: WebSocket;
+    const closeHandler = () => {
+      setTimeout(createChannel, 3000);
+    };
+
+    const createChannel = () => {
+      ws?.removeEventListener('close', closeHandler);
+      ws?.close();
+
+      ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx');
+      ws.addEventListener('close', closeHandler);
+      SetWsChannel(ws);
+    };
+    createChannel();
+
+    return () => {
+      ws?.removeEventListener('close', closeHandler);
+      ws?.close();
+    };
+  }, []);
+
   return (
     <div>
-      <Messages />
-      <SendMessageForm />
+      <Messages wsChannel={wsChannel} />
+      <SendMessageForm wsChannel={wsChannel} />
     </div>
   );
 };
@@ -26,15 +48,19 @@ type ChatMessageType = {
   userName: string;
 };
 
-const Messages = () => {
+const Messages: FC<{ wsChannel: WebSocket | null }> = ({ wsChannel }) => {
   const [messages, SetMessages] = useState<ChatMessageType[]>([]);
 
   useEffect(() => {
-    wsChannel.addEventListener('message', (e: MessageEvent) => {
+    const messageHandler = (e: MessageEvent) => {
       let newMessage = JSON.parse(e.data);
       SetMessages((prevMessages: ChatMessageType[]) => [...prevMessages, ...newMessage]);
-    });
-  }, []);
+    };
+    wsChannel?.addEventListener('message', messageHandler);
+    return () => {
+      wsChannel?.removeEventListener('message', messageHandler);
+    };
+  }, [wsChannel]);
 
   return (
     <div style={{ height: '500px', width: '500px', overflow: 'auto' }}>
@@ -55,12 +81,25 @@ const Message: FC<{ message: ChatMessageType }> = ({ message }) => {
   );
 };
 
-const SendMessageForm = () => {
+const SendMessageForm: FC<{ wsChannel: WebSocket | null }> = ({ wsChannel }) => {
+  const [isReady, SetIsReady] = useState(false);
+
+  useEffect(() => {
+    const openHandler = () => {
+      SetIsReady(true);
+    };
+    wsChannel?.addEventListener('open', openHandler);
+
+    return () => {
+      wsChannel?.removeEventListener('open', openHandler);
+    };
+  }, [wsChannel]);
+
   return (
     <Formik
       initialValues={{ newMessage: '' }}
       onSubmit={(formData, { resetForm }) => {
-        wsChannel.send(formData.newMessage);
+        wsChannel?.send(formData.newMessage);
         resetForm({});
       }}
     >
@@ -72,7 +111,12 @@ const SendMessageForm = () => {
           label="Write new message"
           color="secondary"
         />
-        <Button color="secondary" variant="contained" type="submit">
+        <Button
+          disabled={wsChannel === null || isReady === false}
+          color="secondary"
+          variant="contained"
+          type="submit"
+        >
           Send
         </Button>
       </Form>
