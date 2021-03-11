@@ -89,6 +89,7 @@ export const HeaderNav = () => {
           centered
         >
           <Tab label="Home" to="/profile" component={Link} />
+          <Tab label="ProfileNew" to="/profilenew" component={Link} />
           <Tab label="Chat" to="/chat" component={Link} />
           <Tab label="Friends" to="/friends" component={Link} />
           <Tab label="Find people" to="/people" component={Link} />

@@ -38,7 +38,6 @@ const Users: FC = () => {
   const followingInProgress = useSelector(getFollowingInProgress);
   const isFetching = useSelector(getIsFetching);
   const filter = useSelector(getFilter);
-  console.log(filter)
   
   type QueryParamsType = {
     term?: string;

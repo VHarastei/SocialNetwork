@@ -9,14 +9,14 @@ import Contacts from './ProfileContacts';
 import { ProfileType } from '../../../types/types';
 
 type PropsType = {
-  profile: ProfileType | null
-  isOwner: boolean
-  savePhoto: (file: File) => void
-  updateStatus: (status: string) => void
-  status: string
-  statusError: string
-  saveProfile: (FormData: ProfileType) => Promise<any>
-}
+  profile: ProfileType | null;
+  isOwner: boolean;
+  savePhoto: (file: File) => void;
+  updateStatus: (status: string) => void;
+  status: string;
+  statusError: string;
+  saveProfile: (FormData: ProfileType) => Promise<any>;
+};
 
 const ProfileInfo: FC<PropsType> = ({
   profile,
@@ -31,9 +31,6 @@ const ProfileInfo: FC<PropsType> = ({
   if (!profile) {
     return <Preloader />;
   }
-
-  
-
 
   const onSavePhoto = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
@@ -50,7 +47,7 @@ const ProfileInfo: FC<PropsType> = ({
   return (
     <div>
       <div className={s.descriptionBlock}>
-        <ProfilePhoto photo={profile.photos.large}/>
+        <ProfilePhoto photo={profile.photos.large} />
         {isOwner && <input type={'file'} onChange={onSavePhoto} />}
         {editMode ? (
           <ProfileDataForm profile={profile} onSubmit={onSubmit} />
@@ -63,17 +60,17 @@ const ProfileInfo: FC<PropsType> = ({
             }}
           />
         )}
-        <ProfileStatus {...{ isOwner, updateStatus, status, statusError }} /> 
+        <ProfileStatus {...{ isOwner, updateStatus, status, statusError }} />
       </div>
     </div>
   );
 };
 
 type ProfileDataPropsType = {
-  profile: ProfileType
-  isOwner?: boolean
-  toggleEditMode?: () => void
-}
+  profile: ProfileType;
+  isOwner?: boolean;
+  toggleEditMode?: () => void;
+};
 
 export const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggleEditMode }) => {
   return (
@@ -86,23 +83,17 @@ export const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, toggle
       )}
       <div>About me: {profile.aboutMe}</div>
       <Contacts contacts={profile.contacts} />
-      
     </div>
   );
 };
 
-
 type ProfilePhotoPropsType = {
-  photo: string | null
-}
+  photo: string | null;
+};
 export const ProfilePhoto: FC<ProfilePhotoPropsType> = ({ photo }) => {
   return (
     <div>
-      <img
-          className={s.icon}
-          src={photo || defaultPhoto}
-          alt="icon"
-        />
+      <img className={s.icon} src={photo || defaultPhoto} alt="icon" />
     </div>
   );
 };

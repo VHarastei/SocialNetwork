@@ -3,6 +3,8 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { deletePeopleProfile, getPeopleProfile } from '../../redux/peopleProfileReducer';
+import { AppStateType } from '../../redux/reduxStore';
 import { requestUsers, toggleFollow, actions } from '../../redux/usersReducer';
 import {
   getFilter,
@@ -28,8 +30,8 @@ const useStyles = makeStyles((theme) =>
       flexDirection: 'row',
       overflow: 'hidden',
     },
-    searchBar: {     
-      height: '90vh',
+    searchBar: {
+      height: '92.5vh',
       width: 500,
       marginLeft: 12,
       overflow: 'auto',
@@ -56,22 +58,24 @@ const Friends = () => {
   const followingInProgress = useSelector(getFollowingInProgress);
   const totalUsersCount = useSelector(getTotalUsersCount);
   const filter = useSelector(getFilter);
+  const profile = useSelector((state: AppStateType) => state.peopleProfile.profile);
+  const status = useSelector((state: AppStateType) => state.peopleProfile.status);
 
-  // 1 раз завжди з першим викликом
   const dispatch = useDispatch();
   useEffect(() => {
     let newFilter = { term: filter.term, friend: true };
-    //console.log('mount1')
     dispatch(requestUsers(1, 99, newFilter));
-    //console.log('mount2')
-    return () => {
-      //let newFilter = { term: '', friend: null };
-      //console.log('unmount1')
-      dispatch(actions.setFilter({ term: '', friend: null }))
-      //dispatch(requestUsers(1, 1, { term: '', friend: null }));
-      //console.log('unmount2')
-    }
+    // return () => {
+    //   dispatch(actions.setFilter({ term: '', friend: null }));
+    // };
   }, []);
+
+  useEffect(() => {
+    dispatch(getPeopleProfile(+userId));
+    return () => {
+      dispatch(deletePeopleProfile());
+    };
+  }, [userId]);
 
   const toggleFollowUser = (userId: number, followed: boolean) => {
     dispatch(toggleFollow(userId, followed));
@@ -82,6 +86,7 @@ const Friends = () => {
   };
 
   if (isFetching) return <Preloader />;
+  // if (!profile) return <Preloader />;
 
   return (
     <div className={classes.container}>
@@ -100,8 +105,15 @@ const Friends = () => {
         ))}
       </Box>
       <Box className={classes.friendProfile}>
-        {userId ? (
-          <PeopleProfile />
+        {userId && profile ? (
+          <PeopleProfile
+            getProfileCallback={getPeopleProfile}
+            profile={profile}
+            status={status}
+            userId={userId}
+          />
+        ) : !profile ? (
+          <Preloader />
         ) : (
           <Box className={classes.withoutProfile}>
             <Typography variant="h4" style={{ color: 'gray' }}>

@@ -6,12 +6,13 @@ import './App.css';
 import Preloader from './components/common/Preloader/Preloader';
 import SignIn from './components/Login/LoginNew';
 import { HeaderNav } from './components/NavBar/NavBarNew';
+import { ProfilePage } from './components/ProfileNew/MyProfilePage';
 import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
 import { initializeApp } from './redux/appReducer';
 import { AppStateType } from './redux/reduxStore';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const ChatPage = React.lazy(() => import('./pages/ChatPage/ChatPage'));
-const FindPeople = React.lazy(() => import('./components/Users/Users'));
+const FindPeoplePage = React.lazy(() => import('./components/Users/FindPeoplePage'));
 const Login = React.lazy(() => import('./components/Login/Login'));
 const Friends = React.lazy(() => import('./components/Friends/Friends'));
 
@@ -41,13 +42,14 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
                 <Redirect to="/profile" />
               </Route>
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
+              <Route path="/profilenew/:userId?" render={() => <ProfilePage />} />
               <Route path="/chat" render={() => <ChatPage />} />
               <Route path="/friends/:userId?" render={() => <Friends />} />
-              <Route exact path="/people" render={() => <FindPeople />} />
-              <Route
+              <Route  path="/people/:userId?" render={() => <FindPeoplePage />} />
+              {/* <Route
                 path="/people/:userId"
                 render={() => <PeopleProfile backBtnPath={'people'} />}
-              />
+              /> */}
               <Route path="/login" render={() => <Login />} />
               <Route path="*" render={() => <div>404 NOT FOUND </div>} />
               {/* <Redirect exact from="/" to="/profile" /> */}

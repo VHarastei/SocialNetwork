@@ -27,8 +27,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import { deletePeopleProfile, getPeopleProfile } from '../../../redux/peopleProfileReducer';
 import { AppStateType } from '../../../redux/reduxStore';
 import Preloader from '../../common/Preloader/Preloader';
+import { ContactsType, ProfileType } from '../../../types/types';
+import { Contacts } from './Contacts';
+import { EditDialog } from './EditDialog';
 
-const useStyles1 = makeStyles({
+const useStyles = makeStyles({
   container: {
     marginTop: 15,
   },
@@ -76,23 +79,31 @@ const useStyles1 = makeStyles({
 
 type PropsType = {
   backBtnPath?: string | null;
+  editProfile?: boolean;
+  userId: string | number;
+  profile: ProfileType
+  status: string
+  getProfileCallback: (userId:number) => void
+  deleteProfileCallback?: () => void
+
 };
 
-export const PeopleProfile: FC<PropsType> = ({ backBtnPath }) => {
-  const classes = useStyles1();
-  let { userId } = useParams<{ userId: string }>();
+export const PeopleProfile: FC<PropsType> = ({userId, profile, status, getProfileCallback, deleteProfileCallback ,backBtnPath, editProfile }) => {
+  const classes = useStyles();
+  // let params = useParams<{ userId: string }>();
+  // if(userId === 0) {
+  //   userId = params.userId as string
+  // }
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getPeopleProfile(+userId));
-
-    return () => {
-      dispatch(deletePeopleProfile());
-    };
+    dispatch(getProfileCallback(+userId));
+    if(deleteProfileCallback) {
+      return () => {
+        dispatch(deleteProfileCallback());
+      };
+    }
   }, [userId]);
-
-  const profile = useSelector((state: AppStateType) => state.peopleProfile.profile);
-  const status = useSelector((state: AppStateType) => state.peopleProfile.status);
 
   let history = useHistory();
   const redirect = () => {
@@ -100,19 +111,8 @@ export const PeopleProfile: FC<PropsType> = ({ backBtnPath }) => {
   };
 
   if (!profile) return <Preloader />;
+  const contacts = profile.contacts;
 
-  let contacts = profile.contacts;
-
-  let contactsIcons = [
-    <FacebookIcon />,
-    <WebIcon />,
-    <ContactsIcon />,
-    <TwitterIcon />,
-    <InstagramIcon />,
-    <YouTubeIcon />,
-    <GitHubIcon />,
-    <LinkIcon />,
-  ];
   return (
     <Container className={classes.container}>
       {backBtnPath && (
@@ -134,6 +134,7 @@ export const PeopleProfile: FC<PropsType> = ({ backBtnPath }) => {
         <Box>
           <Typography variant="h4">{profile.fullName}</Typography>
           <Typography variant="h6">{status || 'No status'}</Typography>
+          {editProfile && <EditDialog />}
         </Box>
       </Paper>
       <Paper className={classes.paper}>
@@ -160,18 +161,7 @@ export const PeopleProfile: FC<PropsType> = ({ backBtnPath }) => {
             <Typography variant="h4">Contacts</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <List>
-              {(Object.keys(contacts) as Array<keyof typeof contacts>).map((key, index) => {
-                return (
-                  <ListItem key={index}>
-                    <Box className={classes.contactsIcons}>{contactsIcons[index]}</Box>
-                    <Typography variant="subtitle1">
-                      {key[0].toLocaleUpperCase() + key.slice(1)}: {contacts[key]}
-                    </Typography>
-                  </ListItem>
-                );
-              })}
-            </List>
+            <Contacts contacts={contacts} />
           </AccordionDetails>
         </Accordion>
       </Paper>
