@@ -1,21 +1,18 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getStatus, getUserProfile } from "../../redux/profileReducer";
-import { AppStateType } from "../../redux/reduxStore";
-import { PeopleProfile } from "../Users/PeopleProfile/PeopleProfile";
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getStatus, getUserProfile } from '../../redux/profileReducer';
+import { AppStateType } from '../../redux/reduxStore';
+import { PeopleProfile } from '../Users/PeopleProfile/PeopleProfile';
 
+export const MyProfilePage = () => {
+  const userId = useSelector((state: AppStateType) => state.auth.userId) as number;
+  const profile = useSelector((state: AppStateType) => state.profilePage.profile);
+  const status = useSelector((state: AppStateType) => state.profilePage.status);
 
-export const ProfilePage = () => {
-  const userId = useSelector((state: AppStateType) => state.auth.userId) as number
   useEffect(() => {
     getUserProfile(userId);
     getStatus(userId);
-  }, [userId])
+  }, [userId]);
 
-
-
-  return <div>
-    {/* <PeopleProfile /> */}
-
-  </div>;
-}
+  return <div>{profile && <PeopleProfile profile={profile} status={status} editProfile />}</div>;
+};

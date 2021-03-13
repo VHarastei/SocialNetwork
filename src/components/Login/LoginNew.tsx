@@ -97,7 +97,6 @@ export default function SignIn() {
       validationSchema={loginSchema}
       initialValues={{ email: '', password: '', rememberMe: false, captcha: '' }}
       onSubmit={async (formData, { setStatus }) => {
-        console.log(formData);
         let signInError = await dispatch(
           login(formData.email, formData.password, formData.rememberMe, formData.captcha)
         );

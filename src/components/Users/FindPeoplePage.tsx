@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { getPeopleProfile } from '../../redux/peopleProfileReducer';
+import { deletePeopleProfile, getPeopleProfile } from '../../redux/peopleProfileReducer';
 import { AppStateType } from '../../redux/reduxStore';
 import Preloader from '../common/Preloader/Preloader';
 import { PeopleProfile } from './PeopleProfile/PeopleProfile';
@@ -14,18 +14,25 @@ const FindPeoplePage: FC = () => {
   let { userId } = useParams<{ userId: string }>();
 
   const dispatch = useDispatch();
-  if (!profile) return <Preloader />;
 
-  if (userId) {
-    <PeopleProfile
-      getProfileCallback={getPeopleProfile}
-      profile={profile}
-      status={status}
-      userId={userId}
-      backBtnPath={'people'}
-    />;
+  const [isLoadingProfile, SetIsLoadingProfile] = useState(false);
+  useEffect(() => {
+    if (userId) {
+      dispatch(getPeopleProfile(+userId));
+      SetIsLoadingProfile(true);
+    }
+    return () => {
+      dispatch(deletePeopleProfile());
+      SetIsLoadingProfile(false);
+    };
+  }, [userId]);
+
+  if (profile) {
+    return <PeopleProfile profile={profile} status={status} backBtnPath={'people'} />;
   }
-
+  if (isLoadingProfile) {
+    return <Preloader />;
+  }
   return <Users />;
 };
 

@@ -1,17 +1,17 @@
 import { Box, Typography } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { deletePeopleProfile, getPeopleProfile } from '../../redux/peopleProfileReducer';
 import { AppStateType } from '../../redux/reduxStore';
-import { requestUsers, toggleFollow, actions } from '../../redux/usersReducer';
+import { requestUsers, toggleFollow } from '../../redux/usersReducer';
 import {
   getFilter,
   getFollowingInProgress,
   getIsFetching,
   getTotalUsersCount,
-  getUsers,
+  getUsers
 } from '../../redux/usersSelectors';
 import { FilterType } from '../../types/types';
 import Preloader from '../common/Preloader/Preloader';
@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) =>
       overflow: 'auto',
     },
     friendProfile: {
+      height: '92.5vh',
+      overflow: 'auto',
       width: 800,
       margin: '0 auto',
     },
@@ -70,10 +72,15 @@ const Friends = () => {
     // };
   }, []);
 
+  const [isLoadingProfile, SetIsLoadingProfile] = useState(false);
   useEffect(() => {
-    dispatch(getPeopleProfile(+userId));
+    if (userId) {
+      dispatch(getPeopleProfile(+userId));
+      SetIsLoadingProfile(true);
+    }
     return () => {
       dispatch(deletePeopleProfile());
+      SetIsLoadingProfile(false);
     };
   }, [userId]);
 
@@ -86,7 +93,6 @@ const Friends = () => {
   };
 
   if (isFetching) return <Preloader />;
-  // if (!profile) return <Preloader />;
 
   return (
     <div className={classes.container}>
@@ -107,12 +113,10 @@ const Friends = () => {
       <Box className={classes.friendProfile}>
         {userId && profile ? (
           <PeopleProfile
-            getProfileCallback={getPeopleProfile}
             profile={profile}
             status={status}
-            userId={userId}
           />
-        ) : !profile ? (
+        ) : isLoadingProfile ? (
           <Preloader />
         ) : (
           <Box className={classes.withoutProfile}>

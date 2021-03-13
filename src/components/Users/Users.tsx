@@ -38,7 +38,7 @@ const Users: FC = () => {
   const followingInProgress = useSelector(getFollowingInProgress);
   const isFetching = useSelector(getIsFetching);
   const filter = useSelector(getFilter);
-  
+
   type QueryParamsType = {
     term?: string;
     page?: string;
@@ -91,16 +91,14 @@ const Users: FC = () => {
     dispatch(toggleFollow(userId, followed));
   };
   const onSearch = (filter: FilterType) => {
-    //console.log('search')
     dispatch(requestUsers(1, pageSize, filter));
   };
   const onChangeCurrentPage = (pageNumber: number) => {
-    //console.log('change')
     dispatch(actions.setCurrentPage(pageNumber));
     dispatch(requestUsers(pageNumber, pageSize, filter));
   };
 
-  if(isFetching) return <Preloader />
+  if (isFetching) return <Preloader />;
 
   return (
     <Container component="main" maxWidth="sm">
@@ -112,7 +110,7 @@ const Users: FC = () => {
           currentPage={currentPage}
         />
       </Box>
-      <SearchForm onSearch={onSearch} selector/>
+      <SearchForm onSearch={onSearch} selector />
 
       {users.map((u) => (
         <UserCard

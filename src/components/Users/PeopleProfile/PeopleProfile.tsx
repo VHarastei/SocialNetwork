@@ -6,28 +6,15 @@ import {
   Box,
   Button,
   Container,
-  List,
-  ListItem,
   Paper,
   Typography,
 } from '@material-ui/core';
-import ContactsIcon from '@material-ui/icons/Contacts';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import LinkIcon from '@material-ui/icons/Link';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import WebIcon from '@material-ui/icons/Web';
-import YouTubeIcon from '@material-ui/icons/YouTube';
 import { makeStyles } from '@material-ui/styles';
-import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import { deletePeopleProfile, getPeopleProfile } from '../../../redux/peopleProfileReducer';
-import { AppStateType } from '../../../redux/reduxStore';
+import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
+import { ProfileType } from '../../../types/types';
 import Preloader from '../../common/Preloader/Preloader';
-import { ContactsType, ProfileType } from '../../../types/types';
 import { Contacts } from './Contacts';
 import { EditDialog } from './EditDialog';
 
@@ -80,30 +67,12 @@ const useStyles = makeStyles({
 type PropsType = {
   backBtnPath?: string | null;
   editProfile?: boolean;
-  userId: string | number;
-  profile: ProfileType
-  status: string
-  getProfileCallback: (userId:number) => void
-  deleteProfileCallback?: () => void
-
+  profile: ProfileType;
+  status: string;
 };
 
-export const PeopleProfile: FC<PropsType> = ({userId, profile, status, getProfileCallback, deleteProfileCallback ,backBtnPath, editProfile }) => {
+export const PeopleProfile: FC<PropsType> = ({ profile, status, backBtnPath, editProfile }) => {
   const classes = useStyles();
-  // let params = useParams<{ userId: string }>();
-  // if(userId === 0) {
-  //   userId = params.userId as string
-  // }
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProfileCallback(+userId));
-    if(deleteProfileCallback) {
-      return () => {
-        dispatch(deleteProfileCallback());
-      };
-    }
-  }, [userId]);
 
   let history = useHistory();
   const redirect = () => {

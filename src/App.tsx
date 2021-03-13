@@ -6,8 +6,7 @@ import './App.css';
 import Preloader from './components/common/Preloader/Preloader';
 import SignIn from './components/Login/LoginNew';
 import { HeaderNav } from './components/NavBar/NavBarNew';
-import { ProfilePage } from './components/ProfileNew/MyProfilePage';
-import { PeopleProfile } from './components/Users/PeopleProfile/PeopleProfile';
+import { MyProfilePage } from './components/ProfileNew/MyProfilePage';
 import { initializeApp } from './redux/appReducer';
 import { AppStateType } from './redux/reduxStore';
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -42,7 +41,7 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
                 <Redirect to="/profile" />
               </Route>
               <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
-              <Route path="/profilenew/:userId?" render={() => <ProfilePage />} />
+              <Route path="/profilenew/:userId?" render={() => <MyProfilePage />} />
               <Route path="/chat" render={() => <ChatPage />} />
               <Route path="/friends/:userId?" render={() => <Friends />} />
               <Route  path="/people/:userId?" render={() => <FindPeoplePage />} />
