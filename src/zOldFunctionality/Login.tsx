@@ -3,9 +3,9 @@ import React, { FC } from 'react';
 import { Field, Form } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { login } from '../../redux/authReducer';
-import { AppStateType } from '../../redux/reduxStore';
-import { composeValidators, maxLength, required } from '../../utils/validators/validators';
+import { login } from '../redux/authReducer';
+import { AppStateType } from '../redux/reduxStore';
+import { composeValidators, maxLength, required } from '../utils/validators/validators';
 import s from './Login.module.css';
 
 type FormDataType = {

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from 'react';
-import Preloader from '../../common/Preloader/Preloader';
+import Preloader from '../../../components/common/Preloader/Preloader';
 import s from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus';
 import defaultPhoto from '../../../assets/images/person.png';

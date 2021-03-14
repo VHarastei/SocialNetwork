@@ -92,7 +92,6 @@ export const PeopleProfile: FC<PropsType> = ({ profile, status, backBtnPath, edi
       <Paper className={classes.paper}>
         <Avatar
           variant="rounded"
-          onClick={() => {}}
           alt={profile.fullName}
           src={profile.photos.large}
           className={classes.avatar}

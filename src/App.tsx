@@ -4,15 +4,13 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { compose } from 'redux';
 import './App.css';
 import Preloader from './components/common/Preloader/Preloader';
-import SignIn from './components/Login/LoginNew';
-import { HeaderNav } from './components/NavBar/NavBarNew';
-import { MyProfilePage } from './components/ProfileNew/MyProfilePage';
+import SignIn from './components/SignInPage/SignInPage';
+import { NavBar } from './components/NavBar/NavBar';
 import { initializeApp } from './redux/appReducer';
 import { AppStateType } from './redux/reduxStore';
-const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const MyProfilePage = React.lazy(() => import('./components/ProfilePage/MyProfilePage'));
 const ChatPage = React.lazy(() => import('./pages/ChatPage/ChatPage'));
 const FindPeoplePage = React.lazy(() => import('./components/Users/FindPeoplePage'));
-const Login = React.lazy(() => import('./components/Login/Login'));
 const Friends = React.lazy(() => import('./components/Friends/Friends'));
 
 type MapPropsType = ReturnType<typeof mapStateToProps>;
@@ -33,23 +31,18 @@ class App extends React.Component<MapPropsType & DispatchPropsType> {
     }
     return (
       <div className="app-wrapper">
-        <HeaderNav />
+        <NavBar />
         <Suspense fallback={<Preloader />}>
           <div className="app-wrapper-content">
             <Switch>
               <Route path="/" exact>
                 <Redirect to="/profile" />
               </Route>
-              <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
-              <Route path="/profilenew/:userId?" render={() => <MyProfilePage />} />
+              <Route path="/profile/:userId?" render={() => <MyProfilePage />} />
               <Route path="/chat" render={() => <ChatPage />} />
               <Route path="/friends/:userId?" render={() => <Friends />} />
               <Route  path="/people/:userId?" render={() => <FindPeoplePage />} />
-              {/* <Route
-                path="/people/:userId"
-                render={() => <PeopleProfile backBtnPath={'people'} />}
-              /> */}
-              <Route path="/login" render={() => <Login />} />
+              
               <Route path="*" render={() => <div>404 NOT FOUND </div>} />
               {/* <Redirect exact from="/" to="/profile" /> */}
             </Switch>

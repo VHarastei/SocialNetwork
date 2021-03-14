@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import s from './ProfileInfo.module.css';
-import { ContactsType } from './../../../types/types';
+import { ContactsType } from '../../../types/types';
 
 type PropsType = {
   contacts: ContactsType;

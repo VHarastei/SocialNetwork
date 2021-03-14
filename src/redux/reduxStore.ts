@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, createStore, compose, Action } from '
 import authReducer from './authReducer';
 import dialogsReducer from './dialogsReducer';
 import profileReducer from './profileReducer';
-import sidebarReducer from './sidebarReducer';
+import sidebarReducer from '../zOldFunctionality/sidebarReducer';
 import usersReducer from './usersReducer';
 import appReducer from './appReducer';
 import chatReducer from './chatReducer';
