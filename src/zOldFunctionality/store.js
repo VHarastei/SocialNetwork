@@ -1,4 +1,4 @@
-import dialogsReducer from '../redux/dialogsReducer';
+import dialogsReducer from './dialogsReducer';
 import profileReducer from '../redux/profileReducer';
 import sidebarReducer from './sidebarReducer';
 

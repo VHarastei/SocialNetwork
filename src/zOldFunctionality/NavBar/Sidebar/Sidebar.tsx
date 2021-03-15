@@ -39,7 +39,8 @@ const SidebarItem: FC<SidebarItemPropsType> = ({ friend }) => {
 
 let mapStateToProps = (state: AppStateType) => {
   return {
-    friends: state.sidebar.friends,
+    friends: []
+    //state.sidebar.friends,
   };
 };
 

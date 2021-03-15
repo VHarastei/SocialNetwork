@@ -59,7 +59,7 @@ const Friends = () => {
   const users = useSelector(getUsers);
   const followingInProgress = useSelector(getFollowingInProgress);
   const totalUsersCount = useSelector(getTotalUsersCount);
-  const filter = useSelector(getFilter);
+  const filter = useSelector(getFilter);//----------------------------------------------------------------------------------
   const profile = useSelector((state: AppStateType) => state.peopleProfile.profile);
   const status = useSelector((state: AppStateType) => state.peopleProfile.status);
 

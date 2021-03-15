@@ -1,4 +1,4 @@
-import { InferActionsTypes } from './reduxStore';
+import { InferActionsTypes } from '../redux/reduxStore';
 import { DialogsType, MessagesType } from '../types/types';
 
 const SEND_MESSAGE = 'SocialNetwork/dialog/SEND_MESSAGE';

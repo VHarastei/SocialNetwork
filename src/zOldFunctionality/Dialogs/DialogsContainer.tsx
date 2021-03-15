@@ -4,7 +4,7 @@ import { withAuthRedirect } from '../hoc/WithAuthRedirect';
 import { compose } from 'redux';
 import { DialogsType, MessagesType } from '../../types/types';
 import { AppStateType } from '../../redux/reduxStore';
-import { actions } from '../../redux/dialogsReducer';
+import { actions } from '../dialogsReducer';
 
 // type MapStatePropsType = {
 //   dialogs: Array<DialogsType>;
@@ -15,10 +15,11 @@ import { actions } from '../../redux/dialogsReducer';
 //   sendMessage: (newMessageText: string) => void;
 // };
 
-let mapStateToProps = (state: AppStateType) => {
-  return {
-    dialogs: state.dialogsPage.dialogs,
-    messages: state.dialogsPage.messages,
+let mapStateToProps = (state: AppStateType) => {  return {
+    dialogs: [],
+    //state.dialogsPage.dialogs,
+    messages: [],
+    //state.dialogsPage.messages,
   };
 };
 

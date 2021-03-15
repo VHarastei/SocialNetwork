@@ -75,7 +75,6 @@ const Users: FC = () => {
 
   useEffect(() => {
     const query: QueryParamsType = {};
-    console.log(query);
     if (!!filter.term) query.term = filter.term;
     if (filter.friend !== null) query.friend = String(filter.friend);
     if (currentPage !== 1) query.page = String(currentPage);

@@ -1,9 +1,7 @@
 import { peopleProfileReducer } from './peopleProfileReducer';
 import { applyMiddleware, combineReducers, createStore, compose, Action } from 'redux';
 import authReducer from './authReducer';
-import dialogsReducer from './dialogsReducer';
 import profileReducer from './profileReducer';
-import sidebarReducer from '../zOldFunctionality/sidebarReducer';
 import usersReducer from './usersReducer';
 import appReducer from './appReducer';
 import chatReducer from './chatReducer';
@@ -13,8 +11,6 @@ import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 let rootReducer = combineReducers({
   profilePage: profileReducer,
   peopleProfile: peopleProfileReducer,
-  dialogsPage: dialogsReducer,
-  sidebar: sidebarReducer,
   usersPage: usersReducer,
   auth: authReducer,
   app: appReducer,
