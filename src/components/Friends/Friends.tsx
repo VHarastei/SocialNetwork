@@ -11,7 +11,7 @@ import {
   getFollowingInProgress,
   getIsFetching,
   getTotalUsersCount,
-  getUsers
+  getUsers,
 } from '../../redux/usersSelectors';
 import { FilterType } from '../../types/types';
 import Preloader from '../common/Preloader/Preloader';
@@ -34,13 +34,16 @@ const useStyles = makeStyles((theme) =>
       height: '92.5vh',
       width: 500,
       marginLeft: 12,
+    },
+    usersCards: {
       overflow: 'auto',
+      height: '90%',
     },
     friendProfile: {
-      height: '92.5vh',
       overflow: 'auto',
       width: 800,
       margin: '0 auto',
+      height: '92.5vh',
     },
     withoutProfile: {
       marginTop: 300,
@@ -59,7 +62,7 @@ const Friends = () => {
   const users = useSelector(getUsers);
   const followingInProgress = useSelector(getFollowingInProgress);
   const totalUsersCount = useSelector(getTotalUsersCount);
-  const filter = useSelector(getFilter);//----------------------------------------------------------------------------------
+  const filter = useSelector(getFilter); //----------------------------------------------------------------------------------
   const profile = useSelector((state: AppStateType) => state.peopleProfile.profile);
   const status = useSelector((state: AppStateType) => state.peopleProfile.status);
 
@@ -100,22 +103,21 @@ const Friends = () => {
         <Box>
           <SearchForm onSearch={onSearch} selector={false} />
         </Box>
-        {users.map((u) => (
-          <UserCard
-            path={'friends'}
-            key={u.id}
-            followingInProgress={followingInProgress}
-            toggleFollowUser={toggleFollowUser}
-            user={u}
-          />
-        ))}
+        <Box className={classes.usersCards}>
+          {users.map((u) => (
+            <UserCard
+              path={'friends'}
+              key={u.id}
+              followingInProgress={followingInProgress}
+              toggleFollowUser={toggleFollowUser}
+              user={u}
+            />
+          ))}
+        </Box>
       </Box>
       <Box className={classes.friendProfile}>
         {userId && profile ? (
-          <PeopleProfile
-            profile={profile}
-            status={status}
-          />
+          <PeopleProfile profile={profile} status={status} />
         ) : isLoadingProfile ? (
           <Preloader />
         ) : (

@@ -37,6 +37,9 @@ const useStyles = makeStyles({
     color: '#fff',
     backgroundColor: '#f3673b',
   },
+  tabs: {
+    marginRight: -150
+  }
 });
 
 export const NavBar = () => {
@@ -82,6 +85,7 @@ export const NavBar = () => {
         ></SupervisedUserCircleIcon>
 
         <Tabs
+         className={classes.tabs}
           value={tabValue}
           onChange={handleChange}
           indicatorColor="secondary"

@@ -4,6 +4,7 @@ import { BaseThunkType, InferActionsTypes } from './reduxStore';
 
 const MESSAGES_RECEIVED = 'SocialNetwork/chat/MESSAGES_RECEIVED';
 const STATUS_CHANGED = 'SocialNetwork/chat/STATUS_CHANGED';
+const CLEAR_MESSAGES = 'SocialNetwork/chat/CLEAR_MESSAGES';
 
 type ChatMessageType = ChatMessageAPIType & { id: string };
 
@@ -26,6 +27,11 @@ let chatReducer = (state = initialState, action: ActionsTypes): InitialStateType
           ...action.payload.messages.map((m) => ({ ...m, id: v1() })),
         ].filter((m, index, arr) => index >= arr.length - 100),
       };
+    case CLEAR_MESSAGES:
+      return {
+        ...state,
+        messages: [],
+      };
     case STATUS_CHANGED:
       return {
         ...state,
@@ -42,6 +48,10 @@ export const actions = {
       type: MESSAGES_RECEIVED,
       payload: { messages },
     } as const),
+  clearMessages: () =>
+    ({
+      type: CLEAR_MESSAGES,
+    } as const),
   statusChanged: (status: StatusType) =>
     ({
       type: STATUS_CHANGED,
@@ -55,6 +65,8 @@ const newMessageHandlerCreactor = (dispatch: any) => {
     _newMessageHandler = (messages) => {
       dispatch(actions.messageReceived(messages));
     };
+  } else {
+    dispatch(actions.messageReceived([]));
   }
   return _newMessageHandler;
 };
@@ -78,6 +90,7 @@ export const startMessagesListening = (): ThunkType => async (dispatch) => {
 export const stopMessagesListening = (): ThunkType => async (dispatch) => {
   chatAPI.unsubscribe('messagesReceived', newMessageHandlerCreactor(dispatch));
   chatAPI.unsubscribe('statusChanged', statusChangedHandlerCreator(dispatch));
+  dispatch(actions.clearMessages())
   chatAPI.stop();
 };
 export const sendMessage = (message: string): ThunkType => async (dispatch) => {

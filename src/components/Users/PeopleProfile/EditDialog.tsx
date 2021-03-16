@@ -33,6 +33,10 @@ const useStyles = makeStyles({
   title: {
     marginTop: 16,
   },
+  button: {
+    '&:hover': { background: '#ff3300' },
+    
+  },
 });
 
 const loginSchema = Yup.object().shape({
@@ -83,7 +87,7 @@ export const EditDialog = () => {
 
   return (
     <div>
-      <Button color="secondary" variant="contained" onClick={handleClickOpen}>
+      <Button className={classes.button} color="secondary" variant="contained" onClick={handleClickOpen}>
         Edit profile
       </Button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} fullWidth>
@@ -109,10 +113,11 @@ export const EditDialog = () => {
                     <Typography color="secondary" component="h1" variant="h6" gutterBottom>
                       <strong>Change profile photo</strong>
                       <Button
+                      className={classes.button + ' ' + classes.uploadPhoto}
                         color="secondary"
                         variant="contained"
                         component="label"
-                        className={classes.uploadPhoto}
+                        //className={classes.uploadPhoto}
                       >
                         Upload photo
                         <input type="file" hidden name="photos.large" onChange={onSavePhoto} />
@@ -178,6 +183,7 @@ export const EditDialog = () => {
                 </DialogContent>
                 <DialogActions>
                   <Button
+                  className={classes.button}
                     autoFocus
                     type="submit"
                     onClick={handleClose}
